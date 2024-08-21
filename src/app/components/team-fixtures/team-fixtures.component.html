@@ -1,0 +1,57 @@
+<div class="fixtures-container">
+  <h2>Fixtures</h2>
+  <div class="dropdown-container">
+    <label for="gameweek">Gameweek:</label>
+    <select
+      id="gameweek"
+      (change)="onGameweekChange($event)"
+      [value]="selectedGameweek"
+    >
+      <option *ngFor="let gw of getGameweeks()" [value]="gw">
+        {{ gw }}
+      </option>
+    </select>
+  </div>
+
+  <div *ngIf="fixtures.length">
+    <div *ngFor="let date of getDates(selectedGameweek)" class="date-group">
+      <div class="date-header">{{ date | date }}</div>
+      <div class="fixtures-list">
+        <div
+          *ngFor="let fixture of fixturesByMatchday[selectedGameweek][date]"
+          class="fixture-card"
+          (click)="getFixtureDetails(fixture.id, fixture)"
+        >
+          <div class="fixture-date">
+            {{ fixture.local_kickoff_time | date : "short" }}
+          </div>
+          <div class="fixture-teams">
+            <span class="team-name">{{ fixture.team_h_name }}</span>
+            <div
+              class="team-score"
+              *ngIf="
+                fixture.team_h_score !== null && fixture.team_a_score !== null
+              "
+            >
+              <span class="team-score-home">{{ fixture.team_h_score }}</span>
+              <span>|</span>
+              <span class="team-score-away">{{ fixture.team_a_score }}</span>
+            </div>
+            <span
+              class="vs"
+              *ngIf="!fixture.team_a_score && !fixture.team_h_score"
+              >vs</span
+            >
+            <span class="team-name">{{ fixture.team_a_name }}</span>
+          </div>
+          <div *ngIf="id === fixture.id">
+            <span>Hello</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!fixtures.length">
+    <p>No fixtures available for Gameweek {{ selectedGameweek }}.</p>
+  </div>
+</div>
