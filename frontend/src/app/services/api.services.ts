@@ -25,4 +25,8 @@ export class ApiService {
         fixture.team_h === teamId || fixture.team_a === teamId
     );
   }
+
+  getFPLManagerData(id: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:3000/api/entry/${id}`);
+  }
 }

@@ -15,6 +15,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MyFplComponent } from './components/my-fpl/my-fpl.component';
 import { MyLeaguesComponent } from './components/my-leagues/my-leagues.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { MyLeaguesComponent } from './components/my-leagues/my-leagues.component
     BrowserModule,
     HttpClientModule,
     AppRoutingModule, // Include routing module
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

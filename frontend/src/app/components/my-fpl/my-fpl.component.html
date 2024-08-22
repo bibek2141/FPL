@@ -1,1 +1,34 @@
-<p>my-fpl works!</p>
+<div class="container">
+  <div class="header">
+    <h1>FPL Manager Search</h1>
+  </div>
+  <div class="search-container">
+    <input
+      type="number"
+      [(ngModel)]="managerID"
+      placeholder="Enter Manager ID"
+    />
+    <button (click)="searchManagerData()">Change ID</button>
+  </div>
+  <div *ngIf="playerData" class="player-info">
+    <p><strong>ID:</strong> {{ playerData.id }}</p>
+    <p><strong>Years Active:</strong> {{ playerData.years_active }}</p>
+    <p>
+      <strong>Name:</strong> {{ playerData.player_first_name }}
+      {{ playerData.player_last_name }}
+    </p>
+    <p><strong>Favorite Team</strong>: {{ favoriteTeamName }}</p>
+    <p><strong>Region</strong>: {{ playerData.player_region_name }}</p>
+    <p>
+      <strong>Overall Points:</strong> {{ playerData.summary_overall_points }}
+    </p>
+    <p><strong>Overall Rank:</strong> {{ playerData.summary_overall_rank }}</p>
+    <p><strong>Event Points:</strong> {{ playerData.summary_event_points }}</p>
+    <p><strong>Event Rank:</strong> {{ playerData.summary_event_rank }}</p>
+    <p><strong>Classic League:</strong></p>
+    <div *ngFor="let league of playerData.leagues.classic">
+      <li>{{ league.name }}</li>
+    </div>
+  </div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+</div>
