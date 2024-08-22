@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "live-fpl-frontend:build:production"
+              "buildTarget": "live-fpl-frontend:build:production"
             },
             "development": {
-              "browserTarget": "live-fpl-frontend:build:development"
+              "buildTarget": "live-fpl-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "live-fpl-frontend:build"
+            "buildTarget": "live-fpl-frontend:build"
           }
         },
         "test": {
