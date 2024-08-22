@@ -1,0 +1,193 @@
+.fixtures-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  background-color: #07f2f2;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+.fixtures-header,
+.fixtures-img {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.fixtures-img {
+  width: 50%;
+  display: flex;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.dropdown-container {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameweek {
+  margin-left: 10px;
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 25px;
+  border-color: white;
+}
+
+#gameweek:focus-visible {
+  outline: none !important;
+}
+
+.date-group {
+  margin-top: 10px;
+}
+
+.date-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.fixtures-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fixture-card {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-values {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.fixture-date {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.fixture-teams {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.vs {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6c757d;
+}
+
+.match-details {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 90%;
+}
+
+.match-details-title,
+.stat-title {
+  display: flex;
+  justify-content: center;
+}
+
+.fixture-stats {
+  margin-top: 10px;
+}
+
+.stat {
+  margin-bottom: 10px;
+}
+
+.stat-title {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 2rem;
+  box-shadow: rgba(135, 135, 135, 0.08) 0px 8px 12px 0px;
+  border-radius: 3px;
+  background-color: #05f26c;
+}
+
+.stat-values {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.home-stat,
+.away-stat {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.home-stat span,
+.away-stat span {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.home-stat span:last-child,
+.away-stat span:last-child {
+  margin-bottom: 0;
+}
+
+.team-score {
+  background: black;
+  color: white;
+  padding-right: 2px;
+}
+
+.team-score-home,
+.team-score,
+.team-score-away {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+img {
+  width: 30px; /* Adjust size as needed */
+  height: auto;
+  margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+  .fixtures-container {
+    padding: 10px;
+  }
+
+  .fixture-card {
+    padding: 10px;
+  }
+
+  .fixture-date,
+  .team-name,
+  .vs,
+  .fixture-event {
+    font-size: 14px;
+  }
+}
