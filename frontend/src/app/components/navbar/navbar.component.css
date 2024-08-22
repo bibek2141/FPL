@@ -1,0 +1,158 @@
+.clubNavigation {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+  background: #fff;
+  position: relative;
+  z-index: 10;
+}
+
+.clubNavigation .clubSitesHeading {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 8.5rem;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  font-family: "PremierSans-Heavy", Arial, "Helvetica Neue", Helvetica,
+    sans-serif;
+  font-weight: normal;
+  color: #76766f;
+}
+
+.clubNavigation .clubList {
+  display: flex;
+  width: 100%;
+  max-width: 130rem;
+  padding-right: 3rem;
+}
+
+.clubNavigation .clubList__club {
+  display: flex;
+  justify-content: center;
+}
+ul li,
+ol li {
+  list-style-type: none;
+}
+
+a {
+  background-color: transparent;
+}
+
+.visuallyHidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.clubNavigation .badge--large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+}
+
+.clubNavigation .name {
+  display: none;
+}
+
+.navbar-bottom {
+  background-color: #37003c;
+  color: white !important;
+  margin-bottom: 3rem;
+}
+
+.navbar-brand {
+  display: inline-block;
+}
+
+.navbar-brand img {
+  width: 30%;
+  height: auto;
+  display: block;
+}
+.navbar-brand {
+  pointer-events: none;
+}
+
+.navbar-brand img {
+  pointer-events: auto;
+}
+
+.nav-link {
+  width: 33.3%;
+  font-weight: normal;
+  font-size: 1.4rem;
+}
+
+.navbar-nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  background-color: white;
+  border: none;
+}
+
+.navbar-nav a {
+  cursor: pointer;
+}
+
+@media (max-width: 1150px) {
+  .clubNavigation .clubList {
+    gap: 0.2rem;
+  }
+}
+
+@media (max-width: 1600px) {
+  .navbar-top {
+    display: none;
+  }
+}
+@media (max-width: 1220px) {
+  .clubNavigation .clubList {
+    gap: 0.4rem;
+  }
+}
+
+@media (max-width: 1300px) {
+  .clubNavigation .clubList {
+    gap: 0.8rem;
+  }
+}
+
+@media (max-width: 960px) {
+  .clubNavigation {
+    padding-left: 13rem;
+  }
+}
+@media (max-width: 68.75em) {
+  .clubNavigation {
+    padding: 0.8rem 0 0.8rem 15rem;
+  }
+
+  .clubNavigation .badge--large {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-fluid {
+    flex-direction: column;
+  }
+
+  .clubList {
+    justify-content: space-around; /* Distribute items evenly */
+  }
+}

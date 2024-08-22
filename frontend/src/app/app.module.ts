@@ -10,11 +10,28 @@ import {
 } from '@angular/common/http';
 import { TeamFixturesComponent } from './components/team-fixtures/team-fixtures.component';
 import { FormatIdentifierPipe } from './module/format-identifier.pipe';
+import { FooterComponent } from './components/footer/footer.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { MyFplComponent } from './components/my-fpl/my-fpl.component';
+import { MyLeaguesComponent } from './components/my-leagues/my-leagues.component';
 
 @NgModule({
-  declarations: [AppComponent, TeamFixturesComponent, FormatIdentifierPipe],
+  declarations: [
+    AppComponent,
+    TeamFixturesComponent,
+    MyFplComponent,
+    MyLeaguesComponent,
+    FormatIdentifierPipe,
+    FooterComponent,
+    NavbarComponent,
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule, // Include routing module
+  ],
+  providers: [],
   bootstrap: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
-  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class AppModule {}
