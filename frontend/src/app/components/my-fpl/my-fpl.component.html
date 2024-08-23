@@ -67,7 +67,7 @@
         <div class="entry-history" *ngIf="entryHistory">
           <h3 class="pb-4">Entry History</h3>
           <div class="entry-item">
-            <span class="entry-label">Bank:</span>
+            <span class="entry-label">Bank (in millions):</span>
             <span class="entry-value">
               {{ entryHistory.bank / 10 | number : "1.2-2" | currency }}
             </span>
@@ -81,7 +81,7 @@
             <span class="entry-value">{{ entryHistory.event_transfers }}</span>
           </div>
           <div class="entry-item">
-            <span class="entry-label">Transfers Cost:</span>
+            <span class="entry-label">Transfers Cost (in millions):</span>
             <span class="entry-value">{{
               entryHistory.event_transfers_cost | currency
             }}</span>
@@ -118,6 +118,64 @@
               entryHistory.value / 10 | number : "1.2-2"
             }}</span>
           </div>
+          <div class="players-picked">
+            <h4 class="text-center pb-4">Players</h4>
+            <div class="classic-leagues" *ngFor="let players of playersPicked">
+              <li class="league-names">
+                <span class="league-name">{{ players.position }}</span>
+                <span
+                  class="league-rank"
+                  *ngIf="players.is_captain && playerMap[players.element]?.name"
+                >
+                  {{ playerMap[players.element].name || "Unknown Player" }}
+                  <strong>(C)</strong></span
+                >
+                <span
+                  class="league-rank"
+                  *ngIf="
+                    !players.is_captain &&
+                    !players.is_vice_captain &&
+                    playerMap[players.element]?.name
+                  "
+                >
+                  {{ playerMap[players.element].name || "Unknown Player" }}
+                </span>
+                <span
+                  class="league-rank"
+                  *ngIf="
+                    players.is_vice_captain && playerMap[players.element]?.name
+                  "
+                  >{{
+                    playerMap[players.element].name || "Unknown Player"
+                  }}
+                  (VC)</span
+                >
+                <img
+                  *ngIf="playerMap[players.element]?.logo"
+                  width="60px"
+                  src="https://resources.premierleague.com/premierleague/photos/players/110x140/p{{
+                    playerMap[players.element].logo
+                  }}.png"
+                />
+                <span
+                  *ngIf="playerPointsMap[players.element] && players.is_captain"
+                  >{{
+                    playerPointsMap[players.element] +
+                      playerPointsMap[players.element]
+                  }}</span
+                >
+                <span
+                  *ngIf="
+                    playerPointsMap[players.element] && !players.is_captain
+                  "
+                  >{{ playerPointsMap[players.element] }}</span
+                >
+                <span *ngIf="!playerPointsMap[players.element]"> - </span>
+                <span *ngIf="players.position > 11"> Sub </span>
+                <span *ngIf="players.position < 12"></span>
+              </li>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -127,7 +185,10 @@
         class="classic-leagues"
         *ngFor="let league of playerData.leagues.classic"
       >
-        <li class="league-names">{{ league.name }}</li>
+        <li class="league-names">
+          <span class="league-name">{{ league.name }}</span>
+          <span class="league-rank">Rank: {{ league.entry_rank }}</span>
+        </li>
       </div>
     </div>
   </div>

@@ -26,4 +26,6 @@ interface Classic {
   id: number;
   name: string;
   rank_count: number;
+  entry_percentile_rank: number;
+  entry_rank: number;
 }

@@ -2,7 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { ManagerData } from 'src/app/models/manager-data.model';
-import { EntryHistory, ManagerPicks } from 'src/app/models/manager-picks.model';
+import {
+  AutomaticSubs,
+  EntryHistory,
+  ManagerPicks,
+} from 'src/app/models/manager-picks.model';
+import { Player } from 'src/app/models/player.model';
 import { Team } from 'src/app/models/team.model';
 import { ApiService } from 'src/app/services/api.services';
 
@@ -16,6 +21,8 @@ export class MyFplComponent implements OnInit {
   playerData: ManagerData | null = null;
   errorMessage: string = '';
   teams: { [key: number]: string } = {};
+  playerMap: { [key: number]: { name: string; logo: string } } = {};
+  playerPointsMap: { [key: number]: number } = {};
   favoriteTeamName: string = '';
   current_event: number = 0;
   started_event: number = 0;
@@ -24,6 +31,7 @@ export class MyFplComponent implements OnInit {
   selectedGameweek: number = 0;
   managerPicks: ManagerPicks | null = null;
   entryHistory: EntryHistory | null = null;
+  playersPicked: AutomaticSubs[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -100,12 +108,10 @@ export class MyFplComponent implements OnInit {
     this.filterPointsByGameweek(this.selectedGameweek);
   }
 
-  filterPointsByGameweek(gameweek: number): void {}
-
-  private setDefaultGameweek() {
+  filterPointsByGameweek(gameweek: number): void {
     if (this.playerData !== null) {
       this.apiService
-        .getFPLGameWeekData(this.playerData.id, this.events[0])
+        .getFPLGameWeekData(this.playerData.id, gameweek)
         .subscribe((data) => {
           this.managerPicks = data;
           if (this.managerPicks !== null) {
@@ -115,11 +121,61 @@ export class MyFplComponent implements OnInit {
     }
   }
 
+  private setDefaultGameweek() {
+    if (this.playerData !== null) {
+      var playersID: number[] = [];
+      this.apiService
+        .getFPLGameWeekData(this.playerData.id, this.events[0])
+        .subscribe((data) => {
+          this.managerPicks = data;
+          if (this.managerPicks !== null) {
+            this.entryHistory = this.managerPicks?.entry_history;
+            this.playersPicked = this.managerPicks?.picks;
+            playersID = this.playersPicked.map((item) => item.element);
+            this.extractPlayers(playersID);
+            this.extractPlayersGameweekPoints(playersID);
+          }
+        });
+    }
+  }
+
+  extractPlayersGameweekPoints(playersID: any) {
+    this.apiService
+      .getFPLGameWeekPlayerData(this.events[0])
+      .subscribe((data) => {
+        const playerPointsMap: { [key: number]: number } = {};
+        playersID.forEach((id: number) => {
+          const player = data.elements.find((el: any) => el.id === id);
+          if (player) {
+            playerPointsMap[id] = player.stats.total_points;
+          }
+        });
+        this.playerPointsMap = playerPointsMap;
+        console.log(this.playerPointsMap);
+      });
+  }
+
   private updateFavoriteTeamName(): void {
     if (this.playerData && this.teams) {
       const playerFavoriteTeamId = this.playerData.favourite_team;
       this.favoriteTeamName =
         this.teams[playerFavoriteTeamId] || 'Unknown Team';
     }
+  }
+
+  extractPlayers(playersID: any) {
+    this.apiService.getFPLData().subscribe((data) => {
+      const playerMap: { [key: number]: { name: string; logo: string } } = {};
+      playersID.forEach((id: number) => {
+        const player = data.elements.find((el: any) => el.id === id);
+        if (player) {
+          playerMap[id] = {
+            name: player.web_name,
+            logo: player.code, // Example logo URL
+          };
+        }
+      });
+      this.playerMap = playerMap;
+    });
   }
 }

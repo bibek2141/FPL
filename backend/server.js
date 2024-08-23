@@ -67,6 +67,23 @@ app.get("/api/entry/:id/event/:gameweek/picks", async (req, res) => {
   }
 });
 
+//FPL Player Gameweek stats
+app.get("/api/entry/:id/live", async (req, res) => {
+  const { id } = req.params;
+  const url = `https://fantasy.premierleague.com/api/event/${id}/live`;
+  try {
+    const response = await axios.get(url);
+    res.json(response.data);
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      res.status(404).json({ message: "Gameweek not found" });
+    } else {
+      console.error("Error fetching FPL data:", error);
+      res.status(500).json({ message: "Error fetching FPL data" });
+    }
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);

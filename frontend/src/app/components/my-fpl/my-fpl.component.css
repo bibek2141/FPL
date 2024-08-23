@@ -226,6 +226,7 @@ label {
 
 .league-names {
   color: #37003c;
+  font-weight: bold;
 }
 
 .classic-leagues {
@@ -240,9 +241,51 @@ label {
   padding: 8px;
   margin-bottom: 5px;
   border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .classic-leagues li:hover {
   background-color: #37003c;
   color: white;
+}
+
+.league-name {
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.league-rank {
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #005b5b;
+  background-color: #e0ffff;
+  padding: 3px 8px;
+  border-radius: 12px;
+  margin-left: 10px;
+  white-space: nowrap;
+  width: 20%;
+  justify-content: center;
+  display: flex;
+}
+
+img {
+  margin-left: 10px;
+  border-radius: 50%;
+}
+
+.player-points {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: #005b5b;
+  margin-left: 10px;
+}
+
+.sub {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: #d9534f;
+  margin-left: 10px;
 }

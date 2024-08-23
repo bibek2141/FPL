@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.apiService.getFPLData().subscribe(
       (data) => {
-        console.log(this.fplData);
         this.fplData = data;
       },
       (error) => {

@@ -35,4 +35,8 @@ export class ApiService {
       `http://localhost:3000/api/entry/${id}/event/${gameweek}/picks`
     );
   }
+
+  getFPLGameWeekPlayerData(id: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:3000/api/entry/${id}/live`);
+  }
 }

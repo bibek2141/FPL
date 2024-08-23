@@ -3,9 +3,10 @@ export interface ManagerPicks {
   automatic_subs: AutomaticSubs[];
   entry_history: EntryHistory;
   stats: AutomaticSubs[];
+  picks: AutomaticSubs[];
 }
 
-interface AutomaticSubs {
+export interface AutomaticSubs {
   element: number;
   position: number;
   multiplier: number;
