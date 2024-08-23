@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { ManagerData } from 'src/app/models/manager-data.model';
+import { EntryHistory, ManagerPicks } from 'src/app/models/manager-picks.model';
 import { Team } from 'src/app/models/team.model';
 import { ApiService } from 'src/app/services/api.services';
 
@@ -16,6 +17,13 @@ export class MyFplComponent implements OnInit {
   errorMessage: string = '';
   teams: { [key: number]: string } = {};
   favoriteTeamName: string = '';
+  current_event: number = 0;
+  started_event: number = 0;
+  events: number[] = [];
+  selectedEvent: number = 0;
+  selectedGameweek: number = 0;
+  managerPicks: ManagerPicks | null = null;
+  entryHistory: EntryHistory | null = null;
 
   constructor(
     private apiService: ApiService,
@@ -35,7 +43,13 @@ export class MyFplComponent implements OnInit {
     this.apiService.getFPLManagerData(this.managerID).subscribe(
       (data) => {
         this.playerData = data;
-        console.log(this.playerData);
+        if (this.playerData !== null) {
+          this.current_event = this.playerData.current_event;
+          this.started_event = this.playerData.started_event;
+          this.generateEventDropdown(this.current_event, this.started_event);
+          this.setDefaultGameweek();
+        }
+
         this.cookieService.set('id', JSON.stringify(this.managerID));
         this.errorMessage = '';
         this.updateFavoriteTeamName();
@@ -46,6 +60,15 @@ export class MyFplComponent implements OnInit {
         this.cookieService.delete('id');
       }
     );
+  }
+
+  private generateEventDropdown(current_event: number, started_event: number) {
+    for (let i = current_event; i >= started_event; i--) {
+      this.events.push(i);
+    }
+
+    this.selectedEvent = this.events[0];
+    this.events = [...new Set(this.events)]; //remove duplicates
   }
 
   private loadTeamData(): void {
@@ -69,6 +92,27 @@ export class MyFplComponent implements OnInit {
       teamMap[team.id] = team.name;
     });
     return teamMap;
+  }
+
+  // Handle dropdown change event
+  onGameweekChange(event: any): void {
+    this.selectedGameweek = +event.target.value;
+    this.filterPointsByGameweek(this.selectedGameweek);
+  }
+
+  filterPointsByGameweek(gameweek: number): void {}
+
+  private setDefaultGameweek() {
+    if (this.playerData !== null) {
+      this.apiService
+        .getFPLGameWeekData(this.playerData.id, this.events[0])
+        .subscribe((data) => {
+          this.managerPicks = data;
+          if (this.managerPicks !== null) {
+            this.entryHistory = this.managerPicks?.entry_history;
+          }
+        });
+    }
   }
 
   private updateFavoriteTeamName(): void {

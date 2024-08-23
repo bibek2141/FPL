@@ -10,24 +10,125 @@
     />
     <button (click)="searchManagerData()">Change ID</button>
   </div>
+  <div class="fpl-id-instructions">
+    <p class="title">How to Get Your Personal FPL ID</p>
+    <span class="instructions">
+      <strong>Step 1:</strong> Log into the official Fantasy Premier League
+      website.
+      <br />
+      <strong>Step 2:</strong> Click on the 'Points' tab.
+      <br />
+      <strong>Step 3:</strong> Look for the number in the URL of that webpage
+      after <code>'fantasy.premierleague.com/entry/'</code>. This is your unique
+      FPL ID.
+    </span>
+  </div>
+
   <div *ngIf="playerData" class="player-info">
-    <p><strong>ID:</strong> {{ playerData.id }}</p>
-    <p><strong>Years Active:</strong> {{ playerData.years_active }}</p>
-    <p>
-      <strong>Name:</strong> {{ playerData.player_first_name }}
-      {{ playerData.player_last_name }}
-    </p>
-    <p><strong>Favorite Team</strong>: {{ favoriteTeamName }}</p>
-    <p><strong>Region</strong>: {{ playerData.player_region_name }}</p>
-    <p>
-      <strong>Overall Points:</strong> {{ playerData.summary_overall_points }}
-    </p>
-    <p><strong>Overall Rank:</strong> {{ playerData.summary_overall_rank }}</p>
-    <p><strong>Event Points:</strong> {{ playerData.summary_event_points }}</p>
-    <p><strong>Event Rank:</strong> {{ playerData.summary_event_rank }}</p>
-    <p><strong>Classic League:</strong></p>
-    <div *ngFor="let league of playerData.leagues.classic">
-      <li>{{ league.name }}</li>
+    <div class="manager-info">
+      <h3 class="text-center pb-4">Manager Info</h3>
+      <p>
+        <strong>Name:</strong> {{ playerData.player_first_name }}
+        {{ playerData.player_last_name }}
+      </p>
+      <p><strong>ID:</strong> {{ playerData.id }}</p>
+      <p><strong>Years Active:</strong> {{ playerData.years_active }}</p>
+      <p><strong>Favorite Team:</strong> {{ favoriteTeamName }}</p>
+      <p><strong>Region:</strong> {{ playerData.player_region_name }}</p>
+      <p>
+        <strong>Overall Points:</strong> {{ playerData.summary_overall_points }}
+      </p>
+      <p>
+        <strong>Overall Rank:</strong> {{ playerData.summary_overall_rank }}
+      </p>
+      <p>
+        <strong>Event Points:</strong> {{ playerData.summary_event_points }}
+      </p>
+      <p><strong>Event Rank:</strong> {{ playerData.summary_event_rank }}</p>
+      <p><strong>Started Event:</strong> {{ playerData.started_event }}</p>
+    </div>
+    <div *ngIf="playerData.started_event > 0">
+      <div class="dropdown-container">
+        <h4 class="text-center pb-4">Gameweek Points:</h4>
+        <div class="text-center pb-4">
+          <label for="gameweek">Gameweek :</label>
+          <select
+            id="gameweek"
+            (change)="onGameweekChange($event)"
+            [value]="selectedEvent"
+            class="custom-select"
+          >
+            <option *ngFor="let event of events" [value]="event">
+              {{ event }}
+            </option>
+          </select>
+        </div>
+
+        <div class="entry-history" *ngIf="entryHistory">
+          <h3 class="pb-4">Entry History</h3>
+          <div class="entry-item">
+            <span class="entry-label">Bank:</span>
+            <span class="entry-value">
+              {{ entryHistory.bank / 10 | number : "1.2-2" | currency }}
+            </span>
+          </div>
+          <div class="entry-item">
+            <span class="entry-label">Event:</span>
+            <span class="entry-value">{{ entryHistory.event }}</span>
+          </div>
+          <div class="entry-item">
+            <span class="entry-label">Transfers:</span>
+            <span class="entry-value">{{ entryHistory.event_transfers }}</span>
+          </div>
+          <div class="entry-item">
+            <span class="entry-label">Transfers Cost:</span>
+            <span class="entry-value">{{
+              entryHistory.event_transfers_cost | currency
+            }}</span>
+          </div>
+          <div class="entry-item">
+            <span class="entry-label">Overall Rank:</span>
+            <span class="entry-value">{{
+              entryHistory.overall_rank | number
+            }}</span>
+          </div>
+          <div class="entry-item">
+            <span class="entry-label">Percentile Rank:</span>
+            <span class="entry-value">{{ entryHistory.percentile_rank }}%</span>
+          </div>
+          <div class="entry-item">
+            <span class="entry-label">Overall Points:</span>
+            <span class="entry-value">{{ entryHistory.points }}</span>
+          </div>
+          <div class="entry-item">
+            <span class="entry-label">Points on Bench:</span>
+            <span class="entry-value">{{ entryHistory.points_on_bench }}</span>
+          </div>
+          <div class="entry-item">
+            <span class="entry-label">Gameweek Rank:</span>
+            <span class="entry-value">{{ entryHistory.rank | number }}</span>
+          </div>
+          <div class="entry-item">
+            <span class="entry-label">Total Points:</span>
+            <span class="entry-value">{{ entryHistory.total_points }}</span>
+          </div>
+          <div class="entry-item">
+            <span class="entry-label">Value:</span>
+            <span class="entry-value">{{
+              entryHistory.value / 10 | number : "1.2-2"
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="playerData.leagues.classic.length > 0">
+      <h4 class="leagues">Classic League:</h4>
+      <div
+        class="classic-leagues"
+        *ngFor="let league of playerData.leagues.classic"
+      >
+        <li class="league-names">{{ league.name }}</li>
+      </div>
     </div>
   </div>
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
