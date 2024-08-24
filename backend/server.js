@@ -86,14 +86,18 @@ app.get("/api/entry/:id/live", async (req, res) => {
 });
 
 // Serve static files from the Angular app
-app.use(express.static(path.join(__dirname, "dist/live-fpl-frontend")));
+app.use(
+  express.static(path.join(__dirname, "../frontend/dist/live-fpl-frontend"))
+);
 
 // Existing endpoints for FPL data
 // ...
 
 // Catch all other routes and return the index file
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist/live-fpl-frontend/index.html"));
+  res.sendFile(
+    path.join(__dirname, "../frontend/dist/live-fpl-frontend/index.html")
+  );
 });
 
 // Start the server
