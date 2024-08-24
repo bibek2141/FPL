@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const axios = require("axios");
+const path = require("path");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -82,6 +83,17 @@ app.get("/api/entry/:id/live", async (req, res) => {
       res.status(500).json({ message: "Error fetching FPL data" });
     }
   }
+});
+
+// Serve static files from the Angular app
+app.use(express.static(path.join(__dirname, "dist/live-fpl-frontend")));
+
+// Existing endpoints for FPL data
+// ...
+
+// Catch all other routes and return the index file
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist/live-fpl-frontend/index.html"));
 });
 
 // Start the server
