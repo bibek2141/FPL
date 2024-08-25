@@ -4,6 +4,23 @@
     {
       "src": "./server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "../frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "../frontend/dist/live-fpl-frontend"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "./server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "./frontend/dist/live-fpl-frontend/$1"
     }
   ]
 }
