@@ -32,6 +32,7 @@ export class MyFplComponent implements OnInit {
   managerPicks: ManagerPicks | null = null;
   entryHistory: EntryHistory | null = null;
   playersPicked: AutomaticSubs[] = [];
+  activeChip: string = '';
 
   constructor(
     private apiService: ApiService,
@@ -54,8 +55,9 @@ export class MyFplComponent implements OnInit {
         if (this.playerData !== null) {
           this.current_event = this.playerData.current_event;
           this.started_event = this.playerData.started_event;
+          this.selectedGameweek = this.events[0];
           this.generateEventDropdown(this.current_event, this.started_event);
-          this.setDefaultGameweek();
+          this.filterPointsByGameweek(this.events[0]);
         }
 
         this.cookieService.set('id', JSON.stringify(this.managerID));
@@ -109,6 +111,7 @@ export class MyFplComponent implements OnInit {
   }
 
   filterPointsByGameweek(gameweek: number): void {
+    var playersID: number[] = [];
     if (this.playerData !== null) {
       this.apiService
         .getFPLGameWeekData(this.playerData.id, gameweek)
@@ -116,32 +119,20 @@ export class MyFplComponent implements OnInit {
           this.managerPicks = data;
           if (this.managerPicks !== null) {
             this.entryHistory = this.managerPicks?.entry_history;
-          }
-        });
-    }
-  }
-
-  private setDefaultGameweek() {
-    if (this.playerData !== null) {
-      var playersID: number[] = [];
-      this.apiService
-        .getFPLGameWeekData(this.playerData.id, this.events[0])
-        .subscribe((data) => {
-          this.managerPicks = data;
-          if (this.managerPicks !== null) {
-            this.entryHistory = this.managerPicks?.entry_history;
             this.playersPicked = this.managerPicks?.picks;
+            this.activeChip = this.managerPicks?.active_chip;
             playersID = this.playersPicked.map((item) => item.element);
             this.extractPlayers(playersID);
             this.extractPlayersGameweekPoints(playersID);
+            console.log(this.managerPicks, gameweek);
           }
         });
     }
   }
-
   extractPlayersGameweekPoints(playersID: any) {
+    console.log(this.selectedGameweek);
     this.apiService
-      .getFPLGameWeekPlayerData(this.events[0])
+      .getFPLGameWeekPlayerData(this.selectedGameweek)
       .subscribe((data) => {
         const playerPointsMap: { [key: number]: number } = {};
         playersID.forEach((id: number) => {

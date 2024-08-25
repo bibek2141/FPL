@@ -158,9 +158,25 @@
                   }}.png"
                 />
                 <span
-                  *ngIf="playerPointsMap[players.element] && players.is_captain"
+                  *ngIf="
+                    playerPointsMap[players.element] &&
+                    players.is_captain &&
+                    activeChip != '3xc'
+                  "
                   >{{
                     playerPointsMap[players.element] +
+                      playerPointsMap[players.element]
+                  }}</span
+                >
+                <span
+                  *ngIf="
+                    playerPointsMap[players.element] &&
+                    players.is_captain &&
+                    activeChip === '3xc'
+                  "
+                  >{{
+                    playerPointsMap[players.element] +
+                      playerPointsMap[players.element] +
                       playerPointsMap[players.element]
                   }}</span
                 >
@@ -180,7 +196,7 @@
       </div>
     </div>
     <div *ngIf="playerData.leagues.classic.length > 0">
-      <h4 class="leagues">Classic League:</h4>
+      <h4 class="leagues">Classic League(Current Rank):</h4>
       <div
         class="classic-leagues"
         *ngFor="let league of playerData.leagues.classic"

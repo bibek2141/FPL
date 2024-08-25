@@ -28,4 +28,15 @@ interface Classic {
   rank_count: number;
   entry_percentile_rank: number;
   entry_rank: number;
+  active_phases: ActivePhases[];
+}
+
+export interface ActivePhases {
+  phase: number;
+  rank: number;
+  rank_sort: number;
+  total: number;
+  league_id: number;
+  rank_count: number;
+  entry_percentile_rank: number;
 }
