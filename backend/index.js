@@ -85,6 +85,10 @@ app.get("/api/entry/:id/live", async (req, res) => {
   }
 });
 
+app.use("/", (req, res) => {
+  res.send("Server is running.");
+});
+
 // Serve static files from the Angular app
 app.use(
   express.static(path.join(__dirname, "../frontend/dist/live-fpl-frontend"))
@@ -98,10 +102,6 @@ app.get("*", (req, res) => {
   res.sendFile(
     path.join(__dirname, "../frontend/dist/live-fpl-frontend/index.html")
   );
-});
-
-app.use("/", (req, res) => {
-  res.send("Server is running.");
 });
 
 // Start the server
