@@ -31,14 +31,12 @@ export class MyLeaguesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loading = true;
     const savedManagerID = this.cookieService.get('id');
     setTimeout(() => {
       if (savedManagerID) {
         this.managerID = JSON.parse(savedManagerID);
         if (this.managerID !== 0) {
           this.searchManagerData();
-          this.loading = false;
         }
       }
     }, 300);
@@ -47,6 +45,7 @@ export class MyLeaguesComponent implements OnInit {
   searchManagerData() {
     this.apiService.getFPLManagerData(this.managerID).subscribe(
       (data) => {
+        this.loading = true;
         this.playerData = data;
         if (this.playerData !== null) {
           this.classicLeague = this.playerData.leagues.classic;
@@ -55,7 +54,6 @@ export class MyLeaguesComponent implements OnInit {
         }
 
         this.errorMessage = '';
-        this.loading = false;
       },
       (error) => {
         this.playerData = null;
@@ -67,7 +65,6 @@ export class MyLeaguesComponent implements OnInit {
 
   onGameweekChange(event: any): void {
     this.selectedGameweek = +event.target.value;
-    console.log(this.selectedGameweek);
   }
 
   getDefaultLeague(id: number) {
@@ -76,6 +73,7 @@ export class MyLeaguesComponent implements OnInit {
       .subscribe((data) => {
         this.results = data.standings.results;
         this.leagueName = data.league.name;
+        this.loading = false;
       });
   }
 }

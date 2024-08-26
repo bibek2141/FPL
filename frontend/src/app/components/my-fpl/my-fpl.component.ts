@@ -41,16 +41,14 @@ export class MyFplComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loading = true;
-    setTimeout(() => {
-      const savedManagerID = this.cookieService.get('id');
-      if (savedManagerID) {
-        this.managerID = JSON.parse(savedManagerID);
-        this.searchManagerData();
-        this.loadTeamData();
-        this.loading = false;
-      }
-    }, 300);
+    //this.loading = true;
+    const savedManagerID = this.cookieService.get('id');
+    if (savedManagerID) {
+      this.managerID = JSON.parse(savedManagerID);
+      this.searchManagerData();
+      this.loadTeamData();
+      this.loading = false;
+    }
   }
 
   searchManagerData() {
