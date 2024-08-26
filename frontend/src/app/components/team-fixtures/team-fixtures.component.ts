@@ -92,7 +92,7 @@ export class TeamFixturesComponent {
         );
 
         this.fixturesByMatchday = groupedFixtures;
-        this.setDefaultGameweek();
+        this.setDefaultGameweek(); // Ensure default gameweek is set after fixtures are loaded
       },
       (error) => {
         console.error('Error fetching fixtures data:', error);
@@ -114,54 +114,61 @@ export class TeamFixturesComponent {
 
   // Set default gameweek to the current or upcoming gameweek
   setDefaultGameweek(): void {
-    const currentDate = new Date();
+    const currentDate = new Date(); // Current date as a Date object
     const gameweeks = this.getGameweeks();
 
-    // Determine the current gameweek based on currentDate
-    const currentGameweek = this.getGameweekForDate(currentDate);
+    let latestGameweek: number | null = null;
 
-    // Find the last fixture date of the current gameweek
-    const currentGameweekFixtures =
-      this.fixturesByMatchday[currentGameweek] || {};
-    const fixtureDates = Object.keys(currentGameweekFixtures).flatMap((date) =>
-      Object.keys(currentGameweekFixtures[date])
-    );
-    const lastFixtureDate = fixtureDates.sort().pop(); // Get the latest date
+    // Iterate through each gameweek to find the latest one with fixtures
+    for (const gameweek of gameweeks) {
+      if (this.fixturesByMatchday[gameweek]) {
+        const fixtureDates = Object.keys(this.fixturesByMatchday[gameweek]).map(
+          (date) => new Date(date) // Convert each date string to a Date object
+        );
 
-    // Check if the last fixture date has passed
-    const lastFixtureDateTime = lastFixtureDate
-      ? new Date(lastFixtureDate).getTime()
-      : 0;
-    const now = currentDate.getTime();
+        // Get the last (latest) date of the current gameweek
+        const lastFixtureDate = fixtureDates.reduce((latest, date) => {
+          return date > latest ? date : latest;
+        }, new Date(0)); // Initialize with the earliest possible date
 
-    // Determine the next upcoming gameweek
-    const nextGameweek = gameweeks.find((gw) => gw > currentGameweek) || 1;
+        // Compare the latest fixture date with the current date
+        if (currentDate <= lastFixtureDate) {
+          // If the current date is before or on the last fixture date, this is the current gameweek
+          this.selectedGameweek = gameweek;
+          break;
+        }
+      }
+    }
 
-    // Set the default gameweek
-    this.selectedGameweek =
-      lastFixtureDateTime && now > lastFixtureDateTime
-        ? nextGameweek
-        : currentGameweek;
-
+    // If no appropriate gameweek is found, default to the last gameweek
+    if (!this.selectedGameweek) {
+      this.selectedGameweek = gameweeks[gameweeks.length - 1];
+    }
     this.filterFixturesByGameweek(this.selectedGameweek);
   }
 
   // Example method to get gameweek for a given date
   getGameweekForDate(date: Date): number {
     const gameweeks = this.getGameweeks();
+
     for (const gameweek of gameweeks) {
       if (this.fixturesByMatchday[gameweek]) {
-        const fixtureDates = Object.keys(
-          this.fixturesByMatchday[gameweek]
-        ).flatMap((date) =>
-          Object.keys(this.fixturesByMatchday[gameweek][date])
+        const fixtureDates = Object.keys(this.fixturesByMatchday[gameweek])
+          .flatMap((d) => Object.keys(this.fixturesByMatchday[gameweek][d]))
+          .map((d) => new Date(d).getTime()); // Convert to timestamp
+
+        // Check if any fixture date is greater than or equal to the current date
+        const hasUpcomingFixture = fixtureDates.some(
+          (fixtureDateTime) => fixtureDateTime >= date.getTime()
         );
-        if (fixtureDates.some((d) => new Date(d) >= date)) {
+
+        if (hasUpcomingFixture) {
           return gameweek;
         }
       }
     }
-    return 1;
+
+    return 1; // Default to gameweek 1 if no match is found
   }
 
   getGameweeks(): number[] {
