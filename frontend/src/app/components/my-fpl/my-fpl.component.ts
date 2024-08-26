@@ -41,14 +41,18 @@ export class MyFplComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //this.loading = true;
-    const savedManagerID = this.cookieService.get('id');
-    if (savedManagerID) {
-      this.managerID = JSON.parse(savedManagerID);
-      this.searchManagerData();
-      this.loadTeamData();
-      this.loading = false;
-    }
+    setTimeout(() => {
+      this.loading = true;
+      const savedManagerID = this.cookieService.get('id');
+      if (savedManagerID) {
+        this.managerID = JSON.parse(savedManagerID);
+
+        this.searchManagerData();
+        this.loadTeamData();
+
+        this.loading = false;
+      }
+    }, 300);
   }
 
   searchManagerData() {
@@ -62,7 +66,6 @@ export class MyFplComponent implements OnInit {
           this.generateEventDropdown(this.current_event, this.started_event);
           this.filterPointsByGameweek(this.events[0]);
         }
-
         this.cookieService.set('id', JSON.stringify(this.managerID));
         this.errorMessage = '';
         this.updateFavoriteTeamName();
