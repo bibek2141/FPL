@@ -205,7 +205,11 @@
         *ngFor="let league of playerData.leagues.classic"
       >
         <li class="league-names">
-          <span class="league-name">{{ league.name }}</span>
+          <span class="league-name">
+            <a [routerLink]="['/leagues', league.id]">{{
+              league.name
+            }}</a></span
+          >
           <span class="league-rank">Rank: {{ league.entry_rank }}</span>
         </li>
       </div>

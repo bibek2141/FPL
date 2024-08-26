@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'home', component: TeamFixturesComponent },
   { path: 'fpl', component: MyFplComponent },
   { path: 'leagues', component: MyLeaguesComponent },
+  { path: 'leagues/:id', component: MyLeaguesComponent }, // New route with league ID parameter
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' },
 ];

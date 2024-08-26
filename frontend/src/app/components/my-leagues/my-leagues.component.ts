@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import {
   ClassicLeagueStandings,
@@ -11,7 +12,7 @@ import { ApiService } from 'src/app/services/api.services';
 @Component({
   selector: 'app-my-leagues',
   templateUrl: './my-leagues.component.html',
-  styleUrl: './my-leagues.component.css',
+  styleUrls: ['./my-leagues.component.css'],
 })
 export class MyLeaguesComponent implements OnInit {
   managerID: number = 0;
@@ -27,11 +28,21 @@ export class MyLeaguesComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef // Add this
   ) {}
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     const savedManagerID = this.cookieService.get('id');
+
+    this.route.params.subscribe((params) => {
+      if (params['id']) {
+        this.currentLeagueID = +params['id']; // Get league ID from route
+      }
+    });
+
     setTimeout(() => {
       if (savedManagerID) {
         this.managerID = JSON.parse(savedManagerID);
@@ -49,10 +60,12 @@ export class MyLeaguesComponent implements OnInit {
         this.playerData = data;
         if (this.playerData !== null) {
           this.classicLeague = this.playerData.leagues.classic;
-          this.currentLeagueID = this.classicLeague[0].id;
+          console.log(this.currentLeagueID);
+          if (this.currentLeagueID === 0) {
+            this.currentLeagueID = this.classicLeague[0].id; // Default to first league if no ID provided
+          }
           this.getDefaultLeague(this.currentLeagueID);
         }
-
         this.errorMessage = '';
       },
       (error) => {
@@ -64,16 +77,17 @@ export class MyLeaguesComponent implements OnInit {
   }
 
   onLeagueChange(event: any): void {
-    this.selectedGameweek = +event.target.value;
-    this.getDefaultLeague(this.selectedGameweek);
-    console.log(this.selectedGameweek);
+    this.currentLeagueID = +event.target.value; // Update the selected league ID
+    this.getDefaultLeague(this.currentLeagueID);
   }
 
   getDefaultLeague(id: number) {
+    console.log(id);
     this.apiService.getFPLClassicLeaguesStandings(id).subscribe((data) => {
       this.results = data.standings.results;
       this.leagueName = data.league.name;
       this.loading = false;
+      this.cdr.detectChanges();
     });
   }
 }

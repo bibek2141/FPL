@@ -8,13 +8,14 @@
   <div class="search-container" *ngIf="playerData !== null">
     <div class="league-select pb-5">
       <select
-        id="gameweek"
+        id="league"
         (change)="onLeagueChange($event)"
-        [value]="classicLeague"
+        [value]="currentLeagueID"
         class="custom-select"
       >
-        <option *ngFor="let gw of classicLeague" [value]="gw.id">
-          {{ gw.name }}
+        <option>{{ leagueName }}</option>
+        <option *ngFor="let league of classicLeague" [value]="league.id">
+          {{ league.name }}
         </option>
       </select>
     </div>
@@ -39,7 +40,10 @@
     <div class="fpl-id-instructions">
       <p class="title">
         Please go to <a routerLink="/fpl">My FPL</a> and enter the correct FPL
-        ID.
+        ID or Join a league in
+        <a routerLink="https://fantasy.premierleague.com/leagues"
+          >Fantasy Premier League App.</a
+        >.
       </p>
     </div>
   </div>
