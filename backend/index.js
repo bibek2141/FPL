@@ -85,6 +85,23 @@ app.get("/api/entry/:id/live", async (req, res) => {
   }
 });
 
+//FPL Classic League Standings by ID
+app.get("/api/leagues-classic/:id/standings", async (req, res) => {
+  const { id } = req.params;
+  const url = `https://fantasy.premierleague.com/api/leagues-classic/${id}/standings`;
+  try {
+    const response = await axios.get(url);
+    res.json(response.data);
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      res.status(404).json({ message: "Classic League not found" });
+    } else {
+      console.error("Error fetching FPL data:", error);
+      res.status(500).json({ message: "Error fetching FPL data" });
+    }
+  }
+});
+
 // Serve static files from the Angular app
 app.use(
   express.static(path.join(__dirname, "../frontend/dist/live-fpl-frontend"))

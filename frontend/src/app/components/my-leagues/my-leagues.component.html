@@ -1,1 +1,40 @@
-<p>my-leagues works!</p>
+<div class="container">
+  <div class="header">
+    <h1>Active Classic Leagues</h1>
+  </div>
+  <div class="search-container" *ngIf="playerData !== null">
+    <div class="league-select pb-5">
+      <select
+        id="gameweek"
+        (change)="onGameweekChange($event)"
+        [value]="classicLeague"
+        class="custom-select"
+      >
+        <option *ngFor="let gw of classicLeague" [value]="gw.id">
+          {{ gw.name }}
+        </option>
+      </select>
+    </div>
+    <div *ngIf="results !== null">
+      <h5 class="text-center pb-4">
+        Top 50 of League <strong>{{ leagueName }} </strong> only shown
+      </h5>
+      <div class="result-container" *ngFor="let res of results">
+        <p><strong>Rank:</strong> {{ res.rank }}</p>
+        <p><strong>Player Name:</strong> {{ res.player_name | titlecase }}</p>
+        <p><strong>Entry Name:</strong> {{ res.entry_name | titlecase }}</p>
+        <p><strong>Last Rank:</strong> {{ res.last_rank }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-container" *ngIf="playerData === null">
+    <div class="fpl-id-instructions">
+      <p class="title">
+        Please go to <a routerLink="/fpl">My FPL</a> and enter the correct FPL
+        ID.
+      </p>
+    </div>
+  </div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+</div>

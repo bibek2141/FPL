@@ -22,7 +22,7 @@ interface Leagues {
   classic: Classic[];
 }
 
-interface Classic {
+export interface Classic {
   id: number;
   name: string;
   rank_count: number;

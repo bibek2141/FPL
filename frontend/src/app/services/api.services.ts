@@ -41,4 +41,10 @@ export class ApiService {
   getFPLGameWeekPlayerData(id: number): Observable<any> {
     return this.http.get<any>(`${this.otherApi}/entry/${id}/live`);
   }
+
+  getFPLClassicLeaguesStandings(id: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.otherApi}/leagues-classic/${id}/standings`
+    );
+  }
 }
