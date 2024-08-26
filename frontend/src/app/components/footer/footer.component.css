@@ -128,6 +128,11 @@ img {
   color: #fff;
 }
 
+.official {
+  width: 300px;
+  padding-bottom: 3rem;
+}
+
 .mainFooter .footer-link {
   display: block;
   color: inherit;
@@ -171,12 +176,8 @@ img {
 }
 
 .mainFooter .footerCorporate .wrapper {
-  height: 8rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding-left: 3rem;
   max-width: initial;
-  padding: 0 8rem;
 }
 
 .wrapper.col-12 {
@@ -207,10 +208,8 @@ img {
 }
 
 .mainFooter .footerCorporate li {
-  display: inline-block;
-  position: relative;
-  margin: 0 1rem;
-  vertical-align: middle;
+  font-size: 1.3rem;
+  padding-bottom: 1rem;
 }
 
 @media (max-width: 77.5em) {
@@ -238,9 +237,9 @@ img {
   }
 
   .mainFooter .footerCorporate ul {
-    float: none;
-    display: table;
-    margin: 0 auto;
+    column-count: 1;
+    width: 100%;
+    padding-left: 3rem;
   }
 
   .mainFooter .footerCorporate li:first-child {
@@ -248,5 +247,10 @@ img {
     margin-bottom: 2.4rem;
     margin-right: 0;
     padding-right: 0;
+  }
+
+  .official {
+    padding-bottom: 3rem;
+    padding-left: 3rem;
   }
 }

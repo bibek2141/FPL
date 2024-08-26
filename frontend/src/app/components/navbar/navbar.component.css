@@ -67,7 +67,7 @@ a {
 .navbar-bottom {
   background-color: #37003c;
   color: white !important;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 }
 
 .navbar-brand {
@@ -148,11 +148,10 @@ button {
 }
 
 @media (max-width: 768px) {
-  .container-fluid {
-    flex-direction: column;
-  }
-
   .clubList {
     justify-content: space-around; /* Distribute items evenly */
+  }
+  .nav-link {
+    width: 100%;
   }
 }
