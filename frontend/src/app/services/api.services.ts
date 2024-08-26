@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'http://localhost:3000/api/fpl-data'; // Your backend API URL
-  private apiUrl1 = 'http://localhost:3000/api/fixtures';
+  private apiUrl = environment.apiUrl + '/fpl-data'; // Your backend API URL
+  private apiUrl1 = environment.apiUrl + '/fixtures';
+  private otherApi = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -27,16 +29,16 @@ export class ApiService {
   }
 
   getFPLManagerData(id: number): Observable<any> {
-    return this.http.get<any>(`http://localhost:3000/api/entry/${id}`);
+    return this.http.get<any>(`${this.otherApi}/entry/${id}`);
   }
 
   getFPLGameWeekData(id: number, gameweek: number): Observable<any> {
     return this.http.get<any>(
-      `http://localhost:3000/api/entry/${id}/event/${gameweek}/picks`
+      `${this.otherApi}/entry/${id}/event/${gameweek}/picks`
     );
   }
 
   getFPLGameWeekPlayerData(id: number): Observable<any> {
-    return this.http.get<any>(`http://localhost:3000/api/entry/${id}/live`);
+    return this.http.get<any>(`${this.otherApi}/entry/${id}/live`);
   }
 }

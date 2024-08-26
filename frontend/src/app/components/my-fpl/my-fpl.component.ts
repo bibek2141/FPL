@@ -124,13 +124,11 @@ export class MyFplComponent implements OnInit {
             playersID = this.playersPicked.map((item) => item.element);
             this.extractPlayers(playersID);
             this.extractPlayersGameweekPoints(playersID);
-            console.log(this.managerPicks, gameweek);
           }
         });
     }
   }
   extractPlayersGameweekPoints(playersID: any) {
-    console.log(this.selectedGameweek);
     this.apiService
       .getFPLGameWeekPlayerData(this.selectedGameweek)
       .subscribe((data) => {
@@ -142,7 +140,6 @@ export class MyFplComponent implements OnInit {
           }
         });
         this.playerPointsMap = playerPointsMap;
-        console.log(this.playerPointsMap);
       });
   }
 
