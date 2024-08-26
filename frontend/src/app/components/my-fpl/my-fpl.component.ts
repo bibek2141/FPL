@@ -41,40 +41,40 @@ export class MyFplComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const savedManagerID = this.cookieService.get('id');
-    if (savedManagerID) {
-      this.managerID = JSON.parse(savedManagerID);
-      this.searchManagerData();
-      this.loadTeamData();
-    }
+    this.loading = true;
+    setTimeout(() => {
+      const savedManagerID = this.cookieService.get('id');
+      if (savedManagerID) {
+        this.managerID = JSON.parse(savedManagerID);
+        this.searchManagerData();
+        this.loadTeamData();
+        this.loading = false;
+      }
+    }, 300);
   }
 
   searchManagerData() {
-    setTimeout(() => {
-      this.loading = true;
-      this.apiService.getFPLManagerData(this.managerID).subscribe(
-        (data) => {
-          this.playerData = data;
-          if (this.playerData !== null) {
-            this.current_event = this.playerData.current_event;
-            this.started_event = this.playerData.started_event;
-            this.selectedGameweek = this.events[0];
-            this.generateEventDropdown(this.current_event, this.started_event);
-            this.filterPointsByGameweek(this.events[0]);
-          }
-
-          this.cookieService.set('id', JSON.stringify(this.managerID));
-          this.errorMessage = '';
-          this.updateFavoriteTeamName();
-          this.loading = false;
-        },
-        (error) => {
-          this.playerData = null;
-          this.errorMessage = 'ID not found or error fetching data';
-          this.cookieService.delete('id');
+    this.apiService.getFPLManagerData(this.managerID).subscribe(
+      (data) => {
+        this.playerData = data;
+        if (this.playerData !== null) {
+          this.current_event = this.playerData.current_event;
+          this.started_event = this.playerData.started_event;
+          this.selectedGameweek = this.events[0];
+          this.generateEventDropdown(this.current_event, this.started_event);
+          this.filterPointsByGameweek(this.events[0]);
         }
-      );
-    }, 300);
+
+        this.cookieService.set('id', JSON.stringify(this.managerID));
+        this.errorMessage = '';
+        this.updateFavoriteTeamName();
+      },
+      (error) => {
+        this.playerData = null;
+        this.errorMessage = 'ID not found or error fetching data';
+        this.cookieService.delete('id');
+      }
+    );
   }
 
   private generateEventDropdown(current_event: number, started_event: number) {
