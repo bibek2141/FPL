@@ -63,17 +63,17 @@ export class MyLeaguesComponent implements OnInit {
     );
   }
 
-  onGameweekChange(event: any): void {
+  onLeagueChange(event: any): void {
     this.selectedGameweek = +event.target.value;
+    this.getDefaultLeague(this.selectedGameweek);
+    console.log(this.selectedGameweek);
   }
 
   getDefaultLeague(id: number) {
-    this.apiService
-      .getFPLClassicLeaguesStandings(this.currentLeagueID)
-      .subscribe((data) => {
-        this.results = data.standings.results;
-        this.leagueName = data.league.name;
-        this.loading = false;
-      });
+    this.apiService.getFPLClassicLeaguesStandings(id).subscribe((data) => {
+      this.results = data.standings.results;
+      this.leagueName = data.league.name;
+      this.loading = false;
+    });
   }
 }

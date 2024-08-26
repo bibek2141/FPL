@@ -9,7 +9,7 @@
     <div class="league-select pb-5">
       <select
         id="gameweek"
-        (change)="onGameweekChange($event)"
+        (change)="onLeagueChange($event)"
         [value]="classicLeague"
         class="custom-select"
       >
@@ -18,9 +18,13 @@
         </option>
       </select>
     </div>
-    <div *ngIf="results !== null">
+    <div *ngIf="results.length < 1">
+      <p class="text-center">Not Started Yet.</p>
+    </div>
+    <div *ngIf="results !== null && results.length > 0">
       <h5 class="text-center pb-4">
-        Top 50 of League <strong>{{ leagueName }} </strong> only shown
+        <span *ngIf="results.length === 50">Top 50 of </span> League
+        <strong>{{ leagueName }} </strong>
       </h5>
       <div class="result-container" *ngFor="let res of results">
         <p><strong>Rank:</strong> {{ res.rank }}</p>
