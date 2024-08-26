@@ -33,6 +33,7 @@ export class MyFplComponent implements OnInit {
   entryHistory: EntryHistory | null = null;
   playersPicked: AutomaticSubs[] = [];
   activeChip: string = '';
+  loading: boolean = true;
 
   constructor(
     private apiService: ApiService,
@@ -49,27 +50,31 @@ export class MyFplComponent implements OnInit {
   }
 
   searchManagerData() {
-    this.apiService.getFPLManagerData(this.managerID).subscribe(
-      (data) => {
-        this.playerData = data;
-        if (this.playerData !== null) {
-          this.current_event = this.playerData.current_event;
-          this.started_event = this.playerData.started_event;
-          this.selectedGameweek = this.events[0];
-          this.generateEventDropdown(this.current_event, this.started_event);
-          this.filterPointsByGameweek(this.events[0]);
-        }
+    this.loading = true;
+    setTimeout(() => {
+      this.apiService.getFPLManagerData(this.managerID).subscribe(
+        (data) => {
+          this.playerData = data;
+          if (this.playerData !== null) {
+            this.current_event = this.playerData.current_event;
+            this.started_event = this.playerData.started_event;
+            this.selectedGameweek = this.events[0];
+            this.generateEventDropdown(this.current_event, this.started_event);
+            this.filterPointsByGameweek(this.events[0]);
+          }
 
-        this.cookieService.set('id', JSON.stringify(this.managerID));
-        this.errorMessage = '';
-        this.updateFavoriteTeamName();
-      },
-      (error) => {
-        this.playerData = null;
-        this.errorMessage = 'ID not found or error fetching data';
-        this.cookieService.delete('id');
-      }
-    );
+          this.cookieService.set('id', JSON.stringify(this.managerID));
+          this.errorMessage = '';
+          this.updateFavoriteTeamName();
+          this.loading = false;
+        },
+        (error) => {
+          this.playerData = null;
+          this.errorMessage = 'ID not found or error fetching data';
+          this.cookieService.delete('id');
+        }
+      );
+    }, 300);
   }
 
   private generateEventDropdown(current_event: number, started_event: number) {

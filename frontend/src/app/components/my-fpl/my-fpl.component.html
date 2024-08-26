@@ -1,4 +1,7 @@
-<div class="container">
+<div *ngIf="loading" class="loading-screen">
+  <img src="assets/loading.gif" alt="Loading..." />
+</div>
+<div class="container" *ngIf="!loading">
   <div class="header">
     <h1>FPL Manager Search</h1>
   </div>

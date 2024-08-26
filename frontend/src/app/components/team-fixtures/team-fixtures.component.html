@@ -1,4 +1,8 @@
-<div class="fixtures-container">
+<div *ngIf="loading" class="loading-screen">
+  <img src="assets/loading.gif" alt="Loading..." />
+</div>
+
+<div class="fixtures-container" *ngIf="!loading">
   <div class="fixtures-header">
     <div class="fixtures-img">
       <img

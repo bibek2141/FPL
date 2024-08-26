@@ -23,6 +23,7 @@ export class MyLeaguesComponent implements OnInit {
   currentLeagueID: number = 0;
   results: Results[] = [];
   leagueName: string = '';
+  loading: boolean = true;
 
   constructor(
     private apiService: ApiService,
@@ -31,12 +32,14 @@ export class MyLeaguesComponent implements OnInit {
 
   ngOnInit(): void {
     const savedManagerID = this.cookieService.get('id');
-    if (savedManagerID) {
-      this.managerID = JSON.parse(savedManagerID);
-      if (this.managerID !== 0) {
-        this.searchManagerData();
+    setTimeout(() => {
+      if (savedManagerID) {
+        this.managerID = JSON.parse(savedManagerID);
+        if (this.managerID !== 0) {
+          this.searchManagerData();
+        }
       }
-    }
+    }, 300);
   }
 
   searchManagerData() {
@@ -65,11 +68,15 @@ export class MyLeaguesComponent implements OnInit {
   }
 
   getDefaultLeague(id: number) {
-    this.apiService
-      .getFPLClassicLeaguesStandings(this.currentLeagueID)
-      .subscribe((data) => {
-        this.results = data.standings.results;
-        this.leagueName = data.league.name;
-      });
+    setTimeout(() => {
+      this.loading = true;
+      this.apiService
+        .getFPLClassicLeaguesStandings(this.currentLeagueID)
+        .subscribe((data) => {
+          this.results = data.standings.results;
+          this.leagueName = data.league.name;
+          this.loading = false;
+        });
+    });
   }
 }

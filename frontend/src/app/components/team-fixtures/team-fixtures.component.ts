@@ -19,23 +19,27 @@ export class TeamFixturesComponent {
   id: string = '';
   players: { [key: number]: string } = {};
   stats: Stats[] = [];
+  loading: boolean = true;
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
     // Fetch both fixtures and team data
-    this.apiService.getFPLData().subscribe(
-      (data) => {
-        console.log(data);
-        this.teams = this.extractTeams(data);
-        this.players = this.extractPlayers(data);
-        this.loadFixtures();
-        this.setDefaultGameweek();
-      },
-      (error) => {
-        console.error('Error fetching FPL data:', error);
-      }
-    );
+    setTimeout(() => {
+      this.apiService.getFPLData().subscribe(
+        (data) => {
+          this.teams = this.extractTeams(data);
+          this.players = this.extractPlayers(data);
+          this.loadFixtures();
+          this.setDefaultGameweek();
+          this.loading = false; // Hide loading screen
+        },
+        (error) => {
+          console.error('Error fetching FPL data:', error);
+          this.loading = false;
+        }
+      );
+    }, 300);
   }
 
   // Extract team names and map team IDs to names
@@ -192,7 +196,6 @@ export class TeamFixturesComponent {
   //get fixture details
   getFixtureDetails(id: string, fixture: Fixture) {
     if (fixture.stats.length > 0 && fixture.id === id) {
-      console.log(fixture.stats);
       if (this.id === fixture.id) {
         this.id = '';
       } else {
