@@ -232,9 +232,9 @@ img {
     padding-bottom: 1rem;
   }
 
-  .mainFooter .footerContent ul {
+  /* .mainFooter .footerContent ul {
     column-count: 2;
-  }
+  } */
 
   .mainFooter .footerCorporate ul {
     column-count: 1;
