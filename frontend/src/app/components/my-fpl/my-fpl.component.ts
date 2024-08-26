@@ -33,7 +33,7 @@ export class MyFplComponent implements OnInit {
   entryHistory: EntryHistory | null = null;
   playersPicked: AutomaticSubs[] = [];
   activeChip: string = '';
-  loading: boolean = true;
+  loading: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -50,8 +50,8 @@ export class MyFplComponent implements OnInit {
   }
 
   searchManagerData() {
-    this.loading = true;
     setTimeout(() => {
+      this.loading = true;
       this.apiService.getFPLManagerData(this.managerID).subscribe(
         (data) => {
           this.playerData = data;

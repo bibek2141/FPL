@@ -23,7 +23,7 @@ export class MyLeaguesComponent implements OnInit {
   currentLeagueID: number = 0;
   results: Results[] = [];
   leagueName: string = '';
-  loading: boolean = true;
+  loading: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -69,13 +69,13 @@ export class MyLeaguesComponent implements OnInit {
 
   getDefaultLeague(id: number) {
     setTimeout(() => {
-      this.loading = true;
+      this.loading = false;
       this.apiService
         .getFPLClassicLeaguesStandings(this.currentLeagueID)
         .subscribe((data) => {
           this.results = data.standings.results;
           this.leagueName = data.league.name;
-          this.loading = false;
+          this.loading = true;
         });
     });
   }
