@@ -134,18 +134,20 @@ export class MyFplComponent implements OnInit {
     }
   }
   extractPlayersGameweekPoints(playersID: any) {
-    this.apiService
-      .getFPLGameWeekPlayerData(this.selectedGameweek)
-      .subscribe((data) => {
-        const playerPointsMap: { [key: number]: number } = {};
-        playersID.forEach((id: number) => {
-          const player = data.elements.find((el: any) => el.id === id);
-          if (player) {
-            playerPointsMap[id] = player.stats.total_points;
-          }
+    if (this.selectedGameweek !== undefined) {
+      this.apiService
+        .getFPLGameWeekPlayerData(this.selectedGameweek)
+        .subscribe((data) => {
+          const playerPointsMap: { [key: number]: number } = {};
+          playersID.forEach((id: number) => {
+            const player = data.elements.find((el: any) => el.id === id);
+            if (player) {
+              playerPointsMap[id] = player.stats.total_points;
+            }
+          });
+          this.playerPointsMap = playerPointsMap;
         });
-        this.playerPointsMap = playerPointsMap;
-      });
+    }
   }
 
   private updateFavoriteTeamName(): void {
