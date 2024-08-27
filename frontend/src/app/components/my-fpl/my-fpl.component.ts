@@ -51,6 +51,8 @@ export class MyFplComponent implements OnInit {
         this.loadTeamData();
 
         this.loading = false;
+      } else {
+        this.loading = false;
       }
     }, 300);
   }
