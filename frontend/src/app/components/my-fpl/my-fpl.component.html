@@ -128,9 +128,12 @@
                 <span class="league-name">{{ players.position }}</span>
                 <span
                   class="league-rank"
-                  *ngIf="players.is_captain && playerMap[players.element]?.name"
+                  *ngIf="
+                    players.is_captain &&
+                    combinedPlayerData[players.element].name
+                  "
                 >
-                  {{ playerMap[players.element].name || "Unknown Player" }}
+                  {{ combinedPlayerData[players.element].name || "-" }}
                   <strong>(C)</strong></span
                 >
                 <span
@@ -138,58 +141,60 @@
                   *ngIf="
                     !players.is_captain &&
                     !players.is_vice_captain &&
-                    playerMap[players.element]?.name
+                    combinedPlayerData[players.element].name
                   "
                 >
-                  {{ playerMap[players.element].name || "Unknown Player" }}
+                  {{ combinedPlayerData[players.element].name || "-" }}
                 </span>
                 <span
                   class="league-rank"
                   *ngIf="
-                    players.is_vice_captain && playerMap[players.element]?.name
+                    players.is_vice_captain &&
+                    combinedPlayerData[players.element].name
                   "
-                  >{{
-                    playerMap[players.element].name || "Unknown Player"
-                  }}
+                >
+                  {{ combinedPlayerData[players.element].name || "-" }}
                   (VC)</span
                 >
                 <img
-                  *ngIf="playerMap[players.element]?.logo"
-                  width="60px"
+                  *ngIf="combinedPlayerData[players.element]"
                   src="https://resources.premierleague.com/premierleague/photos/players/110x140/p{{
-                    playerMap[players.element].logo
+                    combinedPlayerData[players.element].logo
                   }}.png"
+                  width="60px"
                 />
                 <span
                   *ngIf="
-                    playerPointsMap[players.element] &&
+                    combinedPlayerData[players.element].name &&
                     players.is_captain &&
                     activeChip != '3xc'
                   "
                   >{{
-                    playerPointsMap[players.element] +
-                      playerPointsMap[players.element]
+                    combinedPlayerData[players.element].points +
+                      combinedPlayerData[players.element].points
                   }}</span
                 >
                 <span
                   *ngIf="
-                    playerPointsMap[players.element] &&
+                    combinedPlayerData[players.element] &&
                     players.is_captain &&
                     activeChip === '3xc'
                   "
                   >{{
-                    playerPointsMap[players.element] +
-                      playerPointsMap[players.element] +
-                      playerPointsMap[players.element]
+                    combinedPlayerData[players.element].points +
+                      combinedPlayerData[players.element].points +
+                      combinedPlayerData[players.element].points
                   }}</span
                 >
                 <span
                   *ngIf="
-                    playerPointsMap[players.element] && !players.is_captain
+                    combinedPlayerData[players.element] && !players.is_captain
                   "
-                  >{{ playerPointsMap[players.element] }}</span
+                  >{{ combinedPlayerData[players.element].points }}</span
                 >
-                <span *ngIf="!playerPointsMap[players.element]"> - </span>
+                <!-- <span *ngIf="!combinedPlayerData[players.element].points">
+                  -
+                </span> -->
                 <span *ngIf="players.position > 11"> Sub </span>
                 <span *ngIf="players.position < 12"></span>
               </li>

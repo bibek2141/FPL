@@ -22,30 +22,38 @@
   padding: 20px;
   margin-bottom: 15px;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .manager-info p {
-  margin: 10px 0;
+  margin: 0;
   font-size: 16px;
   color: #37003c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.manager-rank {
-  padding-right: 3rem;
-}
+
 .manager-info p strong {
   color: #007bff;
-  display: inline-block;
-  width: 150px; /* Adjust based on your layout needs */
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
+  .manager-info {
+    padding: 15px;
+  }
+
   .manager-info p {
     font-size: 14px;
-    margin: 8px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 
   .manager-info p strong {
-    width: auto;
+    width: 100%;
   }
 }
 
