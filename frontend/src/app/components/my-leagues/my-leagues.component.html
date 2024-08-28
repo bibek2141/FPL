@@ -27,11 +27,91 @@
         <span *ngIf="results.length === 50">Top 50 of </span> League
         <strong>{{ leagueName }} </strong>
       </h5>
-      <div class="result-container" *ngFor="let res of results">
-        <p><strong>Rank:</strong> {{ res.rank }}</p>
-        <p><strong>Player Name:</strong> {{ res.player_name | titlecase }}</p>
-        <p><strong>Entry Name:</strong> {{ res.entry_name | titlecase }}</p>
-        <p><strong>Last Rank:</strong> {{ res.last_rank }}</p>
+      <div
+        class="result-container"
+        *ngFor="let res of results"
+        (click)="getPlayersDetail(res.entry)"
+      >
+        <div class="manager-info">
+          <p class="manager-rank">{{ res.rank }}</p>
+          <p class="manager-rank">
+            <strong>Player Name:</strong> {{ res.player_name | titlecase }}
+          </p>
+          <p class="manager-rank">
+            <strong>Entry Name:</strong> {{ res.entry_name | titlecase }}
+          </p>
+          <p class="manager-rank">
+            <strong>Last Rank:</strong> {{ res.last_rank }}
+          </p>
+        </div>
+
+        <div class="match-details" *ngIf="leaguePlayerID === res.entry">
+          <div *ngFor="let id of playerIDs" class="player-card">
+            <div class="card">
+              <img
+                *ngIf="combinedPlayerData[id]"
+                src="https://resources.premierleague.com/premierleague/photos/players/110x140/p{{
+                  combinedPlayerData[id].logo
+                }}.png"
+              />
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title" *ngIf="combinedPlayerData[id]">
+                {{ combinedPlayerData[id].name || "-" }}
+                <span
+                  *ngIf="
+                    combinedPlayerData[id].playerID === captainedPlayerID &&
+                    combinedPlayerData[id].playerID !== tripleCaptainPlayerID
+                  "
+                  >(c)</span
+                ><span
+                  *ngIf="
+                    combinedPlayerData[id].playerID === tripleCaptainPlayerID
+                  "
+                  >(tc)</span
+                ><span
+                  *ngIf="
+                    combinedPlayerData[id].playerID === viceCaptainPlayerID
+                  "
+                  >(vc)</span
+                >
+              </h5>
+              <p
+                *ngIf="
+                  combinedPlayerData[id] &&
+                  combinedPlayerData[id].playerID === tripleCaptainPlayerID
+                "
+              >
+                {{
+                  combinedPlayerData[id].points +
+                    combinedPlayerData[id].points +
+                    combinedPlayerData[id].points || "-"
+                }}
+              </p>
+              <p
+                *ngIf="
+                  combinedPlayerData[id] &&
+                  combinedPlayerData[id].playerID === captainedPlayerID &&
+                  combinedPlayerData[id].playerID !== tripleCaptainPlayerID
+                "
+              >
+                {{
+                  combinedPlayerData[id].points +
+                    combinedPlayerData[id].points || "-"
+                }}
+              </p>
+              <p
+                *ngIf="
+                  combinedPlayerData[id] &&
+                  combinedPlayerData[id].playerID !== captainedPlayerID &&
+                  combinedPlayerData[id].playerID !== tripleCaptainPlayerID
+                "
+              >
+                {{ combinedPlayerData[id].points || "-" }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

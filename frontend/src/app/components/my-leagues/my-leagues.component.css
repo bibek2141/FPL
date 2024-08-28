@@ -15,6 +15,40 @@
   width: 100px; /* Adjust size as needed */
 }
 
+.manager-info {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 15px;
+  display: flex;
+}
+
+.manager-info p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #37003c;
+}
+.manager-rank {
+  padding-right: 3rem;
+}
+.manager-info p strong {
+  color: #007bff;
+  display: inline-block;
+  width: 150px; /* Adjust based on your layout needs */
+}
+
+@media (max-width: 768px) {
+  .manager-info p {
+    font-size: 14px;
+    margin: 8px 0;
+  }
+
+  .manager-info p strong {
+    width: auto;
+  }
+}
+
 .search-container {
   margin-bottom: 20px;
 }
@@ -77,18 +111,87 @@
 
 .result-container {
   background-color: #ffffff;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.result-container:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .result-container p {
-  margin: 5px 0;
-  font-size: 16px;
-  color: #37003c;
+  margin: 8px 0;
+  font-size: 18px;
+  color: #333;
 }
 
 .result-container p strong {
-  color: #007bff;
+  color: #37003c;
+}
+
+.match-details {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* Default 6 columns */
+  gap: 15px; /* Space between cards */
+  margin-top: 10px;
+  grid-auto-rows: minmax(100px, auto); /* Ensure rows have a minimum height */
+}
+
+.player-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.card-body {
+  padding: 15px;
+  background-color: #07f2f2;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #37003c;
+}
+
+.card-body p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #37003c;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .match-details {
+    grid-template-columns: repeat(5, 1fr); /* 5 columns */
+  }
+}
+
+@media (max-width: 992px) {
+  .match-details {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  }
+}
+
+@media (max-width: 768px) {
+  .match-details {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  }
+}
+
+@media (max-width: 576px) {
+  .match-details {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  }
 }

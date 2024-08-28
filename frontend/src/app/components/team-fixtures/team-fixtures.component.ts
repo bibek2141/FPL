@@ -4,6 +4,8 @@ import { Player } from 'src/app/models/player.model';
 import { Stats } from 'src/app/models/stats.model';
 import { Team } from 'src/app/models/team.model';
 import { ApiService } from 'src/app/services/api.services';
+import { FixturesService } from 'src/app/services/fixture.services';
+import { GameweekService } from 'src/app/services/gameweek.services';
 
 @Component({
   selector: 'app-team-fixtures',
@@ -21,7 +23,11 @@ export class TeamFixturesComponent {
   stats: Stats[] = [];
   loading: boolean = true;
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private gameweekService: GameweekService,
+    private fixtureService: FixturesService
+  ) {}
 
   ngOnInit(): void {
     // Fetch both fixtures and team data
@@ -62,8 +68,8 @@ export class TeamFixturesComponent {
   }
 
   // Fetch fixtures and map team IDs to names
-  loadFixtures(): void {
-    this.apiService.getFPLFixtures().subscribe(
+  public loadFixtures(): void {
+    this.fixtureService.loadFixtures().subscribe(
       (data: Fixture[]) => {
         const groupedFixtures: FixturesByMatchday = data.reduce(
           (acc: FixturesByMatchday, fixture: Fixture) => {
@@ -100,12 +106,6 @@ export class TeamFixturesComponent {
     );
   }
 
-  // Filter fixtures based on the selected gameweek
-  filterFixturesByGameweek(gameweek: number): void {
-    this.fixtures =
-      Object.values(this.fixturesByMatchday[gameweek] || {}).flat() || [];
-  }
-
   // Handle dropdown change event
   onGameweekChange(event: any): void {
     this.selectedGameweek = +event.target.value;
@@ -114,37 +114,23 @@ export class TeamFixturesComponent {
 
   // Set default gameweek to the current or upcoming gameweek
   setDefaultGameweek(): void {
-    const currentDate = new Date(); // Current date as a Date object
-    const gameweeks = this.getGameweeks();
-
-    let latestGameweek: number | null = null;
-
-    // Iterate through each gameweek to find the latest one with fixtures
-    for (const gameweek of gameweeks) {
-      if (this.fixturesByMatchday[gameweek]) {
-        const fixtureDates = Object.keys(this.fixturesByMatchday[gameweek]).map(
-          (date) => new Date(date) // Convert each date string to a Date object
-        );
-
-        // Get the last (latest) date of the current gameweek
-        const lastFixtureDate = fixtureDates.reduce((latest, date) => {
-          return date > latest ? date : latest;
-        }, new Date(0)); // Initialize with the earliest possible date
-
-        // Compare the latest fixture date with the current date
-        if (currentDate <= lastFixtureDate) {
-          // If the current date is before or on the last fixture date, this is the current gameweek
-          this.selectedGameweek = gameweek;
+    this.apiService.getFPLData().subscribe((data) => {
+      for (var i = 0; i <= data.events.length; i++) {
+        var currentDate = new Date();
+        var newDate = new Date(data.events[i].deadline_time);
+        if (currentDate < newDate) {
+          this.selectedGameweek = data.events[i].id;
+          this.filterFixturesByGameweek(this.selectedGameweek);
           break;
         }
       }
-    }
+    });
+  }
 
-    // If no appropriate gameweek is found, default to the last gameweek
-    if (!this.selectedGameweek) {
-      this.selectedGameweek = gameweeks[gameweeks.length - 1];
-    }
-    this.filterFixturesByGameweek(this.selectedGameweek);
+  // Filter fixtures based on the selected gameweek
+  filterFixturesByGameweek(gameweek: number): void {
+    this.fixtures =
+      Object.values(this.fixturesByMatchday[gameweek] || {}).flat() || [];
   }
 
   // Example method to get gameweek for a given date

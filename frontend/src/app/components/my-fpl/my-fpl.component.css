@@ -261,6 +261,9 @@ label {
 .classic-leagues li:hover {
   background-color: #37003c;
   color: white;
+  .league-rank {
+    color: white;
+  }
 }
 
 .league-name {
