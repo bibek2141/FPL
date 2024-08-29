@@ -89,6 +89,7 @@ export class MyFplComponent implements OnInit {
 
     this.selectedEvent = this.events[0];
     this.events = [...new Set(this.events)]; //remove duplicates
+    this.cdr.detectChanges();
   }
 
   private loadTeamData(): void {
@@ -96,6 +97,7 @@ export class MyFplComponent implements OnInit {
       (data) => {
         this.teams = this.extractTeams(data);
         this.searchManagerData(); // Load player data once teams are available
+        this.cdr.detectChanges();
       },
       (error) => {
         console.error('Error fetching team data:', error);
@@ -111,6 +113,7 @@ export class MyFplComponent implements OnInit {
     teams.forEach((team: Team) => {
       teamMap[team.id] = team.name;
     });
+    this.cdr.detectChanges();
     return teamMap;
   }
 
@@ -164,6 +167,7 @@ export class MyFplComponent implements OnInit {
       const playerFavoriteTeamId = this.playerData.favourite_team;
       this.favoriteTeamName =
         this.teams[playerFavoriteTeamId] || 'Unknown Team';
+      this.cdr.detectChanges();
     }
   }
 
