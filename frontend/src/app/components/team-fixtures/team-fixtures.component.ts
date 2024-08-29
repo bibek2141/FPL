@@ -38,6 +38,7 @@ export class TeamFixturesComponent {
           this.players = this.extractPlayers(data);
           this.loadFixtures();
           this.setDefaultGameweek();
+          this.cdr.detectChanges();
           this.loading = false; // Hide loading screen
         },
         (error) => {
@@ -132,6 +133,7 @@ export class TeamFixturesComponent {
   filterFixturesByGameweek(gameweek: number): void {
     this.fixtures =
       Object.values(this.fixturesByMatchday[gameweek] || {}).flat() || [];
+    this.cdr.detectChanges();
   }
 
   // Example method to get gameweek for a given date
