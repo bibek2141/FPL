@@ -1,0 +1,63 @@
+.fixtures-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  background-color: #07f2f2;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+.fixtures-title {
+  color: #37003c;
+}
+
+.goals-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.goals-table th,
+.goals-table td {
+  border: 1px solid #dee2e6;
+  padding: 8px;
+  text-align: center;
+}
+
+.goals-table th {
+  background-color: #37003c;
+  color: #fff;
+}
+
+.goals-table td {
+  background-color: #fff;
+  color: #333;
+}
+
+.goals-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button[disabled] {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  line-height: 35px;
+}

@@ -1,0 +1,51 @@
+<div class="fixtures-container">
+  <div class="fixtures-header text-center">
+    <h2 class="fixtures-title">Statistics</h2>
+  </div>
+
+  <div class="stats-dropdown pt-3">
+    <select
+      class="form-select form-select-lg mb-3"
+      aria-label=".form-select-lg example"
+      id="statSelect"
+      [(ngModel)]="selectedStat"
+      (change)="onStatChange()"
+    >
+      <option value="goals_scored">Goals Scored</option>
+      <option value="assists">Assists</option>
+    </select>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Player Name</th>
+        <th>**</th>
+        <th>Price</th>
+        <th>Selected by %</th>
+        <th>Bonus</th>
+        <th>Total Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let player of paginatedPlayers">
+        <td>{{ player.web_name }}</td>
+        <td>{{ player[selectedStat] }}</td>
+        <td>{{ player.now_cost / 10 | number : "1.2-2" }}</td>
+        <td>{{ player.selected_by_percent }}</td>
+        <td>{{ player.bonus }}</td>
+        <td>{{ player.total_points }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next
+    </button>
+  </div>
+</div>

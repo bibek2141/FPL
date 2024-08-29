@@ -1,19 +1,10 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Classic, ManagerData } from 'src/app/models/manager-data.model';
 import { ApiService } from 'src/app/services/api.services';
-import { GameweekService } from 'src/app/services/gameweek.services';
 import { Results } from 'src/app/models/classic-league.model';
-import {
-  AutomaticSubs,
-  ManagerPicks,
-} from 'src/app/models/manager-picks.model';
+import { AutomaticSubs } from 'src/app/models/manager-picks.model';
 import { forkJoin } from 'rxjs';
 
 @Component({
