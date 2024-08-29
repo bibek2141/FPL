@@ -120,7 +120,6 @@ export class MyFplComponent implements OnInit {
 
   filterPointsByGameweek(gameweek: number): void {
     var playersID: number[] = [];
-    this.loading = true;
     if (this.playerData !== null) {
       this.apiService
         .getFPLGameWeekData(this.playerData.id, gameweek)
@@ -133,7 +132,6 @@ export class MyFplComponent implements OnInit {
             playersID = this.playersPicked.map((item) => item.element);
             this.extractPlayers(playersID);
             this.extractPlayersGameweekPoints(playersID);
-            this.loading = false;
           }
         });
     }
