@@ -39,7 +39,6 @@ export class TeamFixturesComponent {
           this.loadFixtures();
           this.setDefaultGameweek();
           this.cdr.detectChanges();
-          this.loading = false;
         },
         (error) => {
           console.error('Error fetching FPL data:', error);
@@ -100,6 +99,7 @@ export class TeamFixturesComponent {
 
         this.fixturesByMatchday = groupedFixtures;
         this.setDefaultGameweek(); // Ensure default gameweek is set after fixtures are loaded
+        this.loading = false;
       },
       (error) => {
         console.error('Error fetching fixtures data:', error);

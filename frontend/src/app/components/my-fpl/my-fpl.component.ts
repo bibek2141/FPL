@@ -47,7 +47,6 @@ export class MyFplComponent implements OnInit {
       const savedManagerID = this.cookieService.get('id');
       if (savedManagerID) {
         this.managerID = JSON.parse(savedManagerID);
-
         this.searchManagerData();
         this.cdr.detectChanges();
         this.loading = false;
@@ -64,9 +63,9 @@ export class MyFplComponent implements OnInit {
         if (this.playerData !== null) {
           this.current_event = this.playerData.current_event;
           this.started_event = this.playerData.started_event;
-          this.selectedGameweek = this.events[0];
-          this.loadTeamData();
+          console.log(this.selectedGameweek);
           this.generateEventDropdown(this.current_event, this.started_event);
+          this.selectedGameweek = this.events[0];
           this.filterPointsByGameweek(this.events[0]);
           this.updateFavoriteTeamName();
         }
@@ -92,12 +91,11 @@ export class MyFplComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  private loadTeamData(): void {
+  public loadTeamData(): void {
     this.apiService.getFPLData().subscribe(
       (data) => {
         this.teams = this.extractTeams(data);
         this.searchManagerData(); // Load player data once teams are available
-        //this.updateFavoriteTeamName();
         this.cdr.detectChanges();
       },
       (error) => {
@@ -164,6 +162,7 @@ export class MyFplComponent implements OnInit {
   }
 
   private updateFavoriteTeamName(): void {
+    console.log(this.playerData, this.teams);
     if (this.playerData && this.teams) {
       const playerFavoriteTeamId = this.playerData.favourite_team;
       this.favoriteTeamName =
