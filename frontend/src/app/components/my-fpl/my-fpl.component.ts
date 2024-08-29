@@ -49,7 +49,6 @@ export class MyFplComponent implements OnInit {
         this.managerID = JSON.parse(savedManagerID);
 
         this.searchManagerData();
-        this.loadTeamData();
         this.cdr.detectChanges();
         this.loading = false;
       } else {
@@ -66,12 +65,13 @@ export class MyFplComponent implements OnInit {
           this.current_event = this.playerData.current_event;
           this.started_event = this.playerData.started_event;
           this.selectedGameweek = this.events[0];
+          this.loadTeamData();
           this.generateEventDropdown(this.current_event, this.started_event);
           this.filterPointsByGameweek(this.events[0]);
+          this.updateFavoriteTeamName();
         }
         this.cookieService.set('id', JSON.stringify(this.managerID));
         this.errorMessage = '';
-        this.updateFavoriteTeamName();
         this.cdr.detectChanges();
       },
       (error) => {
@@ -97,6 +97,7 @@ export class MyFplComponent implements OnInit {
       (data) => {
         this.teams = this.extractTeams(data);
         this.searchManagerData(); // Load player data once teams are available
+        //this.updateFavoriteTeamName();
         this.cdr.detectChanges();
       },
       (error) => {

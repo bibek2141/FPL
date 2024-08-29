@@ -39,14 +39,14 @@ export class TeamFixturesComponent {
           this.loadFixtures();
           this.setDefaultGameweek();
           this.cdr.detectChanges();
-          this.loading = false; // Hide loading screen
+          this.loading = false;
         },
         (error) => {
           console.error('Error fetching FPL data:', error);
           this.loading = false;
         }
       );
-    }, 300);
+    }, 700);
   }
 
   // Extract team names and map team IDs to names
@@ -122,7 +122,7 @@ export class TeamFixturesComponent {
         if (currentDate < newDate) {
           this.selectedGameweek = data.events[i].id;
           this.filterFixturesByGameweek(this.selectedGameweek);
-          this.cdr.detectChanges();
+          this.loading = false;
           break;
         }
       }
