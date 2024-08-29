@@ -68,11 +68,11 @@ export class MyFplComponent implements OnInit {
           this.selectedGameweek = this.events[0];
           this.generateEventDropdown(this.current_event, this.started_event);
           this.filterPointsByGameweek(this.events[0]);
-          this.cdr.detectChanges();
         }
         this.cookieService.set('id', JSON.stringify(this.managerID));
         this.errorMessage = '';
         this.updateFavoriteTeamName();
+        this.cdr.detectChanges();
       },
       (error) => {
         this.playerData = null;
