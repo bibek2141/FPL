@@ -3,49 +3,87 @@
     <h2 class="fixtures-title">Statistics</h2>
   </div>
 
-  <div class="stats-dropdown pt-3">
-    <select
-      class="form-select form-select-lg mb-3"
-      aria-label=".form-select-lg example"
-      id="statSelect"
-      [(ngModel)]="selectedStat"
-      (change)="onStatChange()"
+  <div class="stats-dropdown">
+    <mat-form-field appearance="fill">
+      <mat-label>Select Stat</mat-label>
+      <mat-select [(value)]="selectedStat" (selectionChange)="onStatChange()">
+        <mat-option value="goals_scored">Goals Scored</mat-option>
+        <mat-option value="assists">Assists</mat-option>
+        <mat-option value="yellow_cards">Yellow Cards</mat-option>
+        <mat-option value="red_cards">Red Cards</mat-option>
+        <mat-option value="penalties_missed">Penalties Missed</mat-option>
+        <mat-option value="penalties_saved">Penalties Saved</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="!loading">
+    <mat-table
+      [dataSource]="dataSource"
+      matSort
+      class="mat-elevation-z8"
+      matSort
     >
-      <option value="goals_scored">Goals Scored</option>
-      <option value="assists">Assists</option>
-    </select>
-  </div>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Name
+        </mat-header-cell>
+        <mat-cell *matCellDef="let player"> {{ player.web_name }} </mat-cell>
+      </ng-container>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Player Name</th>
-        <th>**</th>
-        <th>Price</th>
-        <th>Selected by %</th>
-        <th>Bonus</th>
-        <th>Total Points</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let player of paginatedPlayers">
-        <td>{{ player.web_name }}</td>
-        <td>{{ player[selectedStat] }}</td>
-        <td>{{ player.now_cost / 10 | number : "1.2-2" }}</td>
-        <td>{{ player.selected_by_percent }}</td>
-        <td>{{ player.bonus }}</td>
-        <td>{{ player.total_points }}</td>
-      </tr>
-    </tbody>
-  </table>
+      <ng-container matColumnDef="stat">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          **
+        </mat-header-cell>
+        <mat-cell *matCellDef="let player">
+          {{ player[selectedStat] }}
+        </mat-cell>
+      </ng-container>
 
-  <div class="pagination">
-    <button (click)="previousPage()" [disabled]="currentPage === 1">
-      Previous
-    </button>
-    <span>Page {{ currentPage }} of {{ totalPages }}</span>
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
-      Next
-    </button>
+      <ng-container matColumnDef="cost">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Cost
+        </mat-header-cell>
+        <mat-cell *matCellDef="let player">
+          {{ player.now_cost / 10 | number : "1.1-2" }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="selected">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Selected By (%)
+        </mat-header-cell>
+        <mat-cell *matCellDef="let player">
+          {{ player.selected_by_percent }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="bonus">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Bonus
+        </mat-header-cell>
+        <mat-cell *matCellDef="let player"> {{ player.bonus }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="points">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Total Points
+        </mat-header-cell>
+        <mat-cell *matCellDef="let player">
+          {{ player.total_points }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
   </div>
+  <mat-paginator
+    [length]="dataSource.data.length"
+    [pageSize]="20"
+    [pageSizeOptions]="[5, 10, 20, 50]"
+  ></mat-paginator>
 </div>

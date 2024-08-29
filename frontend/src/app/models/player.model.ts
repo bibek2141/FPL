@@ -7,4 +7,7 @@ export interface Player {
   selected_by_percent: number;
   bonus: number;
   total_points: number;
+  yellow_cards: number;
+  penalties_saved: number;
+  penalties_missed: number;
 }

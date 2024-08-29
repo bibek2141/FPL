@@ -12,6 +12,14 @@ import { MyFplComponent } from './components/my-fpl/my-fpl.component';
 import { MyLeaguesComponent } from './components/my-leagues/my-leagues.component';
 import { FormsModule } from '@angular/forms';
 import { StatsComponent } from './components/stats/stats.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -29,6 +37,15 @@ import { StatsComponent } from './components/stats/stats.component';
     HttpClientModule,
     AppRoutingModule, // Include routing module
     FormsModule,
+    MatButtonModule,
+    MatTableModule,
+    MatTableModule,
+    MatSelectModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    BrowserAnimationsModule,
+    MatProgressSpinnerModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

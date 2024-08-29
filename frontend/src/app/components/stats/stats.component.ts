@@ -1,68 +1,76 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { Player } from 'src/app/models/player.model';
 import { ApiService } from 'src/app/services/api.services';
 
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',
-  styleUrl: './stats.component.css',
+  styleUrls: ['./stats.component.css'],
 })
-export class StatsComponent implements OnInit {
-  players: Player[] = [];
-  paginatedPlayers: Player[] = [];
-  currentPage: number = 1;
-  itemsPerPage: number = 20;
-  totalPages: number = 1;
-  selectedStat: keyof Player = 'goals_scored';
+export class StatsComponent implements OnInit, AfterViewInit {
+  displayedColumns: string[] = [
+    'name',
+    'stat',
+    'cost',
+    'selected',
+    'bonus',
+    'points',
+  ];
+  dataSource = new MatTableDataSource<Player>([]);
+  selectedStat: string = 'goals_scored';
+  loading: boolean = true;
 
-  constructor(private apiService: ApiService) {}
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(MatSort) set content(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+
+  pageSizes = [5, 10, 20]; // Page size options
+
+  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.getData();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.cdr.detectChanges();
+  }
+
   getData() {
+    this.loading = true;
     this.apiService.getFPLData().subscribe((data) => {
-      this.players = data.elements;
-      this.updatePaginatedPlayers();
+      this.dataSource.data = data.elements;
+      this.updateTableData(); // Apply filtering and sorting
+      this.loading = false;
+      window.scrollTo(0, 0);
     });
   }
 
-  updatePaginatedPlayers() {
-    const filteredPlayers = this.players
-      .filter((p: Player) => {
-        const value = p[this.selectedStat];
-        return typeof value === 'number' && value >= 1;
-      })
-      .sort((a: Player, b: Player) => {
-        const aValue = a[this.selectedStat] as number;
-        const bValue = b[this.selectedStat] as number;
-        return bValue - aValue;
-      });
-
-    this.totalPages = Math.ceil(filteredPlayers.length / this.itemsPerPage);
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedPlayers = filteredPlayers.slice(startIndex, endIndex);
-    window.scroll(0, 0);
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.updatePaginatedPlayers();
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePaginatedPlayers();
-    }
+  updateTableData() {
+    // Apply filtering based on selectedStat
+    this.dataSource.data = this.dataSource.data
+      .filter(
+        (p: Player) => (p[this.selectedStat as keyof Player] as number) >= 1
+      )
+      .sort(
+        (a: Player, b: Player) =>
+          (b[this.selectedStat as keyof Player] as number) -
+          (a[this.selectedStat as keyof Player] as number)
+      );
   }
 
   onStatChange() {
-    this.currentPage = 1; // Reset to the first page when stat changes
-    this.updatePaginatedPlayers();
+    this.getData();
   }
 }
