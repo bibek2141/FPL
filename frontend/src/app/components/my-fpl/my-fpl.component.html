@@ -128,12 +128,9 @@
                 <span class="league-name">{{ players.position }}</span>
                 <span
                   class="league-rank"
-                  *ngIf="
-                    players.is_captain &&
-                    combinedPlayerData[players.element].name
-                  "
+                  *ngIf="players.is_captain && playerMap[players.element]?.name"
                 >
-                  {{ combinedPlayerData[players.element].name || "-" }}
+                  {{ playerMap[players.element].name || "Unknown Player" }}
                   <strong>(C)</strong></span
                 >
                 <span
@@ -141,60 +138,58 @@
                   *ngIf="
                     !players.is_captain &&
                     !players.is_vice_captain &&
-                    combinedPlayerData[players.element].name
+                    playerMap[players.element]?.name
                   "
                 >
-                  {{ combinedPlayerData[players.element].name || "-" }}
+                  {{ playerMap[players.element].name || "Unknown Player" }}
                 </span>
                 <span
                   class="league-rank"
                   *ngIf="
-                    players.is_vice_captain &&
-                    combinedPlayerData[players.element].name
+                    players.is_vice_captain && playerMap[players.element]?.name
                   "
-                >
-                  {{ combinedPlayerData[players.element].name || "-" }}
+                  >{{
+                    playerMap[players.element].name || "Unknown Player"
+                  }}
                   (VC)</span
                 >
                 <img
-                  *ngIf="combinedPlayerData[players.element]"
-                  src="https://resources.premierleague.com/premierleague/photos/players/110x140/p{{
-                    combinedPlayerData[players.element].logo
-                  }}.png"
+                  *ngIf="playerMap[players.element]?.logo"
                   width="60px"
+                  src="https://resources.premierleague.com/premierleague/photos/players/110x140/p{{
+                    playerMap[players.element].logo
+                  }}.png"
                 />
                 <span
                   *ngIf="
-                    combinedPlayerData[players.element].name &&
+                    playerPointsMap[players.element] &&
                     players.is_captain &&
                     activeChip != '3xc'
                   "
                   >{{
-                    combinedPlayerData[players.element].points +
-                      combinedPlayerData[players.element].points
+                    playerPointsMap[players.element] +
+                      playerPointsMap[players.element]
                   }}</span
                 >
                 <span
                   *ngIf="
-                    combinedPlayerData[players.element] &&
+                    playerPointsMap[players.element] &&
                     players.is_captain &&
                     activeChip === '3xc'
                   "
                   >{{
-                    combinedPlayerData[players.element].points +
-                      combinedPlayerData[players.element].points +
-                      combinedPlayerData[players.element].points
+                    playerPointsMap[players.element] +
+                      playerPointsMap[players.element] +
+                      playerPointsMap[players.element]
                   }}</span
                 >
                 <span
                   *ngIf="
-                    combinedPlayerData[players.element] && !players.is_captain
+                    playerPointsMap[players.element] && !players.is_captain
                   "
-                  >{{ combinedPlayerData[players.element].points }}</span
+                  >{{ playerPointsMap[players.element] }}</span
                 >
-                <!-- <span *ngIf="!combinedPlayerData[players.element].points">
-                  -
-                </span> -->
+                <span *ngIf="!playerPointsMap[players.element]"> - </span>
                 <span *ngIf="players.position > 11"> Sub </span>
                 <span *ngIf="players.position < 12"></span>
               </li>
@@ -211,7 +206,7 @@
       >
         <li class="league-names">
           <span class="league-name">
-            <a [routerLink]="['/leagues', league.id]">{{
+            <a [routerLink]="['/my-leagues', league.id]">{{
               league.name
             }}</a></span
           >

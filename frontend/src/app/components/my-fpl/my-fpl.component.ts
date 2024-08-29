@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { forkJoin } from 'rxjs';
 import { ManagerData } from 'src/app/models/manager-data.model';
 import {
   AutomaticSubs,
@@ -35,14 +34,6 @@ export class MyFplComponent implements OnInit {
   playersPicked: AutomaticSubs[] = [];
   activeChip: string = '';
   loading: boolean = false;
-  combinedPlayerData: {
-    [key: number]: {
-      playerID: number;
-      name: string;
-      logo: string;
-      points: number;
-    };
-  } = {};
 
   constructor(
     private apiService: ApiService,
@@ -140,70 +131,29 @@ export class MyFplComponent implements OnInit {
             this.playersPicked = this.managerPicks?.picks;
             this.activeChip = this.managerPicks?.active_chip;
             playersID = this.playersPicked.map((item) => item.element);
-            // this.extractPlayers(playersID);
-            // this.extractPlayersGameweekPoints(playersID);
-            this.fetchAndCombinePlayerData(playersID);
+            this.extractPlayers(playersID);
+            this.extractPlayersGameweekPoints(playersID);
             this.loading = false;
           }
         });
     }
   }
-
-  fetchAndCombinePlayerData(playersID: number[]) {
+  extractPlayersGameweekPoints(playersID: any) {
     if (this.selectedGameweek !== undefined) {
-      // Fetch both APIs in parallel
-      forkJoin([
-        this.apiService.getFPLGameWeekPlayerData(this.selectedGameweek),
-        this.apiService.getFPLData(),
-      ]).subscribe(([gameweekData, playerData]) => {
-        const combinedData: {
-          [key: number]: {
-            playerID: number;
-            name: string;
-            logo: string;
-            points: number;
-          };
-        } = {};
-
-        playersID.forEach((id: number) => {
-          const gameweekPlayer = gameweekData.elements.find(
-            (el: any) => el.id === id
-          );
-          const playerInfo = playerData.elements.find(
-            (el: any) => el.id === id
-          );
-
-          if (gameweekPlayer && playerInfo) {
-            combinedData[id] = {
-              playerID: playerInfo.id,
-              name: playerInfo.web_name,
-              logo: playerInfo.code, // Replace with the actual logo URL if needed
-              points: gameweekPlayer.stats.total_points,
-            };
-          }
+      this.apiService
+        .getFPLGameWeekPlayerData(this.selectedGameweek)
+        .subscribe((data) => {
+          const playerPointsMap: { [key: number]: number } = {};
+          playersID.forEach((id: number) => {
+            const player = data.elements.find((el: any) => el.id === id);
+            if (player) {
+              playerPointsMap[id] = player.stats.total_points;
+            }
+          });
+          this.playerPointsMap = playerPointsMap;
         });
-
-        this.combinedPlayerData = combinedData;
-      });
     }
   }
-
-  // extractPlayersGameweekPoints(playersID: any) {
-  //   if (this.selectedGameweek !== undefined) {
-  //     this.apiService
-  //       .getFPLGameWeekPlayerData(this.selectedGameweek)
-  //       .subscribe((data) => {
-  //         const playerPointsMap: { [key: number]: number } = {};
-  //         playersID.forEach((id: number) => {
-  //           const player = data.elements.find((el: any) => el.id === id);
-  //           if (player) {
-  //             playerPointsMap[id] = player.stats.total_points;
-  //           }
-  //         });
-  //         this.playerPointsMap = playerPointsMap;
-  //       });
-  //   }
-  // }
 
   private updateFavoriteTeamName(): void {
     if (this.playerData && this.teams) {
@@ -213,19 +163,19 @@ export class MyFplComponent implements OnInit {
     }
   }
 
-  // extractPlayers(playersID: any) {
-  //   this.apiService.getFPLData().subscribe((data) => {
-  //     const playerMap: { [key: number]: { name: string; logo: string } } = {};
-  //     playersID.forEach((id: number) => {
-  //       const player = data.elements.find((el: any) => el.id === id);
-  //       if (player) {
-  //         playerMap[id] = {
-  //           name: player.web_name,
-  //           logo: player.code, // Example logo URL
-  //         };
-  //       }
-  //     });
-  //     this.playerMap = playerMap;
-  //   });
-  // }
+  extractPlayers(playersID: any) {
+    this.apiService.getFPLData().subscribe((data) => {
+      const playerMap: { [key: number]: { name: string; logo: string } } = {};
+      playersID.forEach((id: number) => {
+        const player = data.elements.find((el: any) => el.id === id);
+        if (player) {
+          playerMap[id] = {
+            name: player.web_name,
+            logo: player.code, // Example logo URL
+          };
+        }
+      });
+      this.playerMap = playerMap;
+    });
+  }
 }
