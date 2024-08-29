@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { ManagerData } from 'src/app/models/manager-data.model';
 import {
@@ -37,7 +37,8 @@ export class MyFplComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +50,7 @@ export class MyFplComponent implements OnInit {
 
         this.searchManagerData();
         this.loadTeamData();
-
+        this.cdr.detectChanges();
         this.loading = false;
       } else {
         this.loading = false;
@@ -67,6 +68,7 @@ export class MyFplComponent implements OnInit {
           this.selectedGameweek = this.events[0];
           this.generateEventDropdown(this.current_event, this.started_event);
           this.filterPointsByGameweek(this.events[0]);
+          this.cdr.detectChanges();
         }
         this.cookieService.set('id', JSON.stringify(this.managerID));
         this.errorMessage = '';
@@ -116,6 +118,7 @@ export class MyFplComponent implements OnInit {
   onGameweekChange(event: any): void {
     this.selectedGameweek = +event.target.value;
     this.filterPointsByGameweek(this.selectedGameweek);
+    this.cdr.detectChanges();
   }
 
   filterPointsByGameweek(gameweek: number): void {
@@ -132,6 +135,8 @@ export class MyFplComponent implements OnInit {
             playersID = this.playersPicked.map((item) => item.element);
             this.extractPlayers(playersID);
             this.extractPlayersGameweekPoints(playersID);
+            this.selectedGameweek = gameweek;
+            this.cdr.detectChanges();
           }
         });
     }
@@ -149,6 +154,7 @@ export class MyFplComponent implements OnInit {
             }
           });
           this.playerPointsMap = playerPointsMap;
+          this.cdr.detectChanges();
         });
     }
   }
@@ -174,6 +180,7 @@ export class MyFplComponent implements OnInit {
         }
       });
       this.playerMap = playerMap;
+      this.cdr.detectChanges();
     });
   }
 }

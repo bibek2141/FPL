@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { Fixture, FixturesByMatchday } from 'src/app/models/fixture.model';
 import { Player } from 'src/app/models/player.model';
 import { Stats } from 'src/app/models/stats.model';
@@ -25,7 +25,7 @@ export class TeamFixturesComponent {
 
   constructor(
     private apiService: ApiService,
-    private gameweekService: GameweekService,
+    private cdr: ChangeDetectorRef,
     private fixtureService: FixturesService
   ) {}
 
@@ -121,6 +121,7 @@ export class TeamFixturesComponent {
         if (currentDate < newDate) {
           this.selectedGameweek = data.events[i].id;
           this.filterFixturesByGameweek(this.selectedGameweek);
+          this.cdr.detectChanges();
           break;
         }
       }
