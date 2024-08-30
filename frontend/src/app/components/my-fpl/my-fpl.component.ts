@@ -67,7 +67,7 @@ export class MyFplComponent implements OnInit {
           this.generateEventDropdown(this.current_event, this.started_event);
           this.selectedGameweek = this.events[0];
           this.filterPointsByGameweek(this.events[0]);
-          this.updateFavoriteTeamName();
+          // this.updateFavoriteTeamName();
         }
         this.cookieService.set('id', JSON.stringify(this.managerID));
         this.errorMessage = '';
@@ -161,15 +161,15 @@ export class MyFplComponent implements OnInit {
     }
   }
 
-  private updateFavoriteTeamName(): void {
-    console.log(this.playerData, this.teams);
-    if (this.playerData && this.teams) {
-      const playerFavoriteTeamId = this.playerData.favourite_team;
-      this.favoriteTeamName =
-        this.teams[playerFavoriteTeamId] || 'Unknown Team';
-      this.cdr.detectChanges();
-    }
-  }
+  // private updateFavoriteTeamName(): void {
+  //   console.log(this.playerData, this.teams);
+  //   if (this.playerData && this.teams) {
+  //     const playerFavoriteTeamId = this.playerData.favourite_team;
+  //     this.favoriteTeamName =
+  //       this.teams[playerFavoriteTeamId] || 'Unknown Team';
+  //     this.cdr.detectChanges();
+  //   }
+  // }
 
   extractPlayers(playersID: any) {
     this.apiService.getFPLData().subscribe((data) => {

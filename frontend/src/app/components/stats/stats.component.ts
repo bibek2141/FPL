@@ -17,14 +17,7 @@ import { ApiService } from 'src/app/services/api.services';
   styleUrls: ['./stats.component.css'],
 })
 export class StatsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = [
-    'name',
-    'stat',
-    'cost',
-    'selected',
-    'bonus',
-    'points',
-  ];
+  displayedColumns: string[] = ['name', 'stat', 'cost', 'selected', 'points'];
   dataSource = new MatTableDataSource<Player>([]);
   selectedStat: string = 'goals_scored';
   loading: boolean = true;

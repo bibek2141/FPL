@@ -36,7 +36,6 @@
       </p>
       <p><strong>ID:</strong> {{ playerData.id }}</p>
       <p><strong>Years Active:</strong> {{ playerData.years_active }}</p>
-      <p><strong>Favorite Team:</strong> {{ favoriteTeamName }}</p>
       <p><strong>Region:</strong> {{ playerData.player_region_name }}</p>
       <p>
         <strong>Overall Points:</strong> {{ playerData.summary_overall_points }}
@@ -72,7 +71,7 @@
           <div class="entry-item">
             <span class="entry-label">Bank (in millions):</span>
             <span class="entry-value">
-              {{ entryHistory.bank / 10 | number : "1.2-2" | currency }}
+              {{ entryHistory.bank / 10 | number : "1.1-2" }}
             </span>
           </div>
           <div class="entry-item">

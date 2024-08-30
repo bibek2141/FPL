@@ -8,6 +8,10 @@
   overflow-x: auto;
 }
 
+.mat-elevation-z8 {
+  overflow-x: auto;
+}
+
 .fixtures-title {
   color: #37003c;
   font-size: 1.5rem;
