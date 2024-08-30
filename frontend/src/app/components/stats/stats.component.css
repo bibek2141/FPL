@@ -1,41 +1,75 @@
 .fixtures-container {
   padding: 20px;
-  max-width: 1200px;
+  max-width: 90%;
   margin: auto;
   background-color: #07f2f2;
   border: 1px solid #dee2e6;
   border-radius: 8px;
+  overflow-x: auto;
 }
 
 .fixtures-title {
   color: #37003c;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.goals-table {
+.table-container {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+  overflow-x: auto;
 }
 
-.goals-table th,
-.goals-table td {
-  border: 1px solid #dee2e6;
-  padding: 8px;
+.mat-table {
+  width: 100%;
+  min-width: 600px; /* Ensure the table doesn't get too narrow */
+}
+
+.mat-header-cell,
+.mat-cell {
+  padding: 16px;
   text-align: center;
 }
 
-.goals-table th {
+.mat-header-cell {
   background-color: #37003c;
-  color: #fff;
+  color: white;
 }
 
-.goals-table td {
-  background-color: #fff;
-  color: #333;
-}
-
-.goals-table tr:nth-child(even) {
+.mat-row:nth-child(even) .mat-cell {
   background-color: #f2f2f2;
+}
+
+@media screen and (max-width: 768px) {
+  .fixtures-container {
+    padding: 10px;
+  }
+
+  .fixtures-title {
+    font-size: 1.2rem;
+  }
+
+  .mat-header-cell,
+  .mat-cell {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .fixtures-title {
+    font-size: 1rem;
+  }
+
+  .mat-header-cell,
+  .mat-cell {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+
+  .mat-table {
+    min-width: 100%;
+  }
 }
 
 .pagination {
