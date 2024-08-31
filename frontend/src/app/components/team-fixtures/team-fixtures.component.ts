@@ -115,18 +115,26 @@ export class TeamFixturesComponent {
 
   // Set default gameweek to the current or upcoming gameweek
   setDefaultGameweek(): void {
+    var gameweek = [];
     this.apiService.getFPLData().subscribe((data) => {
-      const upcomingGameweek = data.events.find((event: any) => {
+      data.events.find((event: any) => {
         const deadlineDate = new Date(event.deadline_time);
-        return deadlineDate > new Date();
+        gameweek.push(deadlineDate);
+        return deadlineDate >= new Date();
       });
 
-      if (upcomingGameweek) {
-        this.selectedGameweek = upcomingGameweek.id;
+      if (
+        new Date() >= gameweek[gameweek.length - 2] &&
+        new Date() <= gameweek[gameweek.length - 1]
+      ) {
+        this.selectedGameweek = gameweek.length - 1;
         this.filterFixturesByGameweek(this.selectedGameweek);
+      } else if (new Date() >= gameweek[gameweek.length - 1]) {
+        this.selectedGameweek = gameweek.length;
       } else {
-        this.selectedGameweek = 1; // Default to gameweek 1 if no upcoming gameweek is found
+        this.selectedGameweek = 1;
       }
+
       this.loading = false;
     });
   }
