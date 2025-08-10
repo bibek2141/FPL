@@ -37,6 +37,7 @@
 
 .fixtures-img {
   display: flex;
+  margin-top: 0.3rem;
 }
 
 h2 {
@@ -213,7 +214,7 @@ h6 {
 }
 
 img {
-  width: 30px; /* Adjust size as needed */
+  width: 100px; /* Adjust size as needed */
   height: auto;
   margin-right: 10px;
 }

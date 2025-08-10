@@ -38,6 +38,7 @@ export class TeamFixturesComponent {
           this.players = this.extractPlayers(data);
           this.loadFixtures();
           this.setDefaultGameweek();
+          console.log(this.setDefaultGameweek());
           this.cdr.detectChanges();
         },
         (error) => {
@@ -133,6 +134,7 @@ export class TeamFixturesComponent {
         this.selectedGameweek = gameweek.length;
       } else {
         this.selectedGameweek = 1;
+        this.filterFixturesByGameweek(this.selectedGameweek);
       }
 
       this.loading = false;
